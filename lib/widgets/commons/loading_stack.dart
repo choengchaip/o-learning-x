@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:o_learning_x/styles/colors.dart';
+import 'package:o_learning_x/utils/array_helper.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:singh_architecture/styles/colors.dart';
-import 'package:singh_architecture/utils/array_helper.dart';
 
 class LoadingStack extends StatefulWidget {
   final List<Widget> Function() children;

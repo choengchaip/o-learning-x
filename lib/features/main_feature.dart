@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:singh_architecture/configs/config.dart';
-import 'package:singh_architecture/cores/constants.dart';
-import 'package:singh_architecture/cores/context.dart';
-import 'package:singh_architecture/pages/account_page.dart';
-import 'package:singh_architecture/pages/base_page.dart';
-import 'package:singh_architecture/pages/cart_page.dart';
-import 'package:singh_architecture/pages/home_page.dart';
-import 'package:singh_architecture/pages/notification_page.dart';
-import 'package:singh_architecture/repositories/page_repository.dart';
-import 'package:singh_architecture/styles/colors.dart';
-import 'package:singh_architecture/styles/fonts.dart';
-import 'package:singh_architecture/utils/object_helper.dart';
+import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/pages/base_page.dart';
+import 'package:o_learning_x/pages/category_page.dart';
+import 'package:o_learning_x/pages/course_page.dart';
+import 'package:o_learning_x/pages/leader_board_page.dart';
+import 'package:o_learning_x/repositories/page_repository.dart';
+import 'package:o_learning_x/styles/colors.dart';
+import 'package:o_learning_x/styles/fonts.dart';
+import 'package:o_learning_x/utils/object_helper.dart';
 
 class MainFeature extends StatefulWidget {
   final IContext context;
@@ -37,8 +35,6 @@ class MainFeatureState extends State<MainFeature> {
 
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
-
-    widget.context.repositories().cartRepository().fetch();
   }
 
   @override
@@ -65,28 +61,15 @@ class MainFeatureState extends State<MainFeature> {
                   child: BasePage(
                     pageRepository: this.pageRepository,
                     widgets: [
-                      HomePage(
+                      CoursePage(
                         context: widget.context,
                         config: widget.config,
                       ),
-                      CartPage(
-                        onBack: () {
-                          this.pageRepository.prevPage();
-                        },
-                        checkoutPadding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                          left: 24,
-                          right: 24,
-                        ),
+                      CategoryPage(
                         context: widget.context,
                         config: widget.config,
                       ),
-                      NotificationsPage(
-                        context: widget.context,
-                        config: widget.config,
-                      ),
-                      AccountPage(
+                      LeaderBoardPage(
                         context: widget.context,
                         config: widget.config,
                       ),
@@ -125,7 +108,7 @@ class MainFeatureState extends State<MainFeature> {
                                     height: 30,
                                     width: 50,
                                     child: Icon(
-                                      Icons.home_filled,
+                                      Icons.flag,
                                       color: snapshot.data == 0
                                           ? colorPrimary
                                           : colorGrayDark,
@@ -133,9 +116,7 @@ class MainFeatureState extends State<MainFeature> {
                                   ),
                                   Container(
                                     child: Text(
-                                      widget.context
-                                          .localeRepository()
-                                          .getString(Locales.home),
+                                      "บทเรียน",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: s,
@@ -160,71 +141,18 @@ class MainFeatureState extends State<MainFeature> {
                               child: Column(
                                 children: [
                                   Container(
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Container(
-                                          height: 30,
-                                          width: 50,
-                                          child: Icon(
-                                            Icons.shopping_cart,
-                                            color: snapshot.data == 1
-                                                ? colorPrimary
-                                                : colorGrayDark,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: -3,
-                                          right: 1,
-                                          child: StreamBuilder<bool>(
-                                            stream: widget.context
-                                                .repositories()
-                                                .cartRepository()
-                                                .isLoadingSC
-                                                .stream,
-                                            builder: (context, snapshot) {
-                                              if (widget.context
-                                                      .repositories()
-                                                      .cartRepository()
-                                                      .data
-                                                      ?.Products
-                                                      .length ==
-                                                  0) {
-                                                return Container();
-                                              }
-
-                                              return Container(
-                                                alignment: Alignment.center,
-                                                padding: EdgeInsets.all(6),
-                                                decoration: BoxDecoration(
-                                                  color: colorSecondary,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Text(
-                                                  widget.context
-                                                          .repositories()
-                                                          .cartRepository()
-                                                          .data
-                                                          ?.Products
-                                                          .length
-                                                          .toString() ??
-                                                      "0",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      ],
+                                    height: 30,
+                                    width: 50,
+                                    child: Icon(
+                                      Icons.book_rounded,
+                                      color: snapshot.data == 0
+                                          ? colorPrimary
+                                          : colorGrayDark,
                                     ),
                                   ),
                                   Container(
                                     child: Text(
-                                      widget.context
-                                          .localeRepository()
-                                          .getString(Locales.cart),
+                                      "รายวิชา",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: s,
@@ -252,7 +180,7 @@ class MainFeatureState extends State<MainFeature> {
                                     height: 30,
                                     width: 50,
                                     child: Icon(
-                                      Icons.notifications,
+                                      Icons.stars,
                                       color: snapshot.data == 2
                                           ? colorPrimary
                                           : colorGrayDark,
@@ -260,9 +188,7 @@ class MainFeatureState extends State<MainFeature> {
                                   ),
                                   Container(
                                     child: Text(
-                                      widget.context
-                                          .localeRepository()
-                                          .getString(Locales.notification),
+                                      "คะแนน",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: s,
@@ -290,7 +216,7 @@ class MainFeatureState extends State<MainFeature> {
                                     height: 30,
                                     width: 50,
                                     child: Icon(
-                                      Icons.account_circle_rounded,
+                                      Icons.person,
                                       color: snapshot.data == 3
                                           ? colorPrimary
                                           : colorGrayDark,
@@ -298,9 +224,7 @@ class MainFeatureState extends State<MainFeature> {
                                   ),
                                   Container(
                                     child: Text(
-                                      widget.context
-                                          .localeRepository()
-                                          .getString(Locales.account),
+                                      "บัญชี",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: s,

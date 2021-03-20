@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:singh_architecture/repositories/base_repository.dart';
+import 'package:o_learning_x/repositories/base_repository.dart';
 
 abstract class BasePageRepository extends BaseUIRepository {
   StreamController<int> get pageIndexSC;

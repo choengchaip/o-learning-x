@@ -1,25 +1,23 @@
 // ignore_for_file: close_sinks
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/repositories/category_repository.dart';
+import 'package:o_learning_x/repositories/course_repository.dart';
+import 'package:o_learning_x/repositories/discovery_repository.dart';
+import 'package:o_learning_x/repositories/leader_board_repository.dart';
+import 'package:o_learning_x/repositories/my_course_repository.dart';
+import 'package:o_learning_x/repositories/quiz_repository.dart';
+import 'package:o_learning_x/repositories/subject_repository.dart';
+import 'package:o_learning_x/repositories/types.dart';
+import 'package:o_learning_x/utils/requester.dart';
+import 'package:o_learning_x/utils/time_helper.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:singh_architecture/configs/config.dart';
-import 'package:singh_architecture/mocks/banners/banners.dart';
-import 'package:singh_architecture/mocks/carts/carts.dart';
-import 'package:singh_architecture/mocks/categories/categories.dart';
-import 'package:singh_architecture/mocks/notifications/notifications.dart';
-import 'package:singh_architecture/mocks/products/product_detail.dart';
-import 'package:singh_architecture/mocks/products/products.dart';
-import 'package:singh_architecture/models/cart_model.dart';
-import 'package:singh_architecture/repositories/banner_repository.dart';
-import 'package:singh_architecture/repositories/cart_repository.dart';
-import 'package:singh_architecture/repositories/category_repository.dart';
-import 'package:singh_architecture/repositories/notification_repository.dart';
-import 'package:singh_architecture/repositories/product_repository.dart';
-import 'package:singh_architecture/repositories/types.dart';
-import 'package:singh_architecture/utils/time_helper.dart';
 
 class BaseDataRepository<T> implements IBaseDataRepository {
   final BuildContext buildCtx;
@@ -30,8 +28,8 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   bool _isLoaded = false;
   bool _isError = false;
   String _errorMessage = "";
-  List<T>? items;
-  T? data;
+  List<dynamic>? _items;
+  dynamic _data;
 
   late StreamController<bool> _isLoadingSC;
   late StreamController<bool> _isLoadedSC;
@@ -59,6 +57,12 @@ class BaseDataRepository<T> implements IBaseDataRepository {
 
   @override
   String get errorMessage => this._errorMessage;
+
+  @override
+  List<T> get items => this.transforms(this._items);
+
+  @override
+  T? get data => this.transform(this._data);
 
   @override
   StreamController<bool> get isLoadingSC => this._isLoadingSC;
@@ -114,26 +118,112 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   }
 
   @override
+  List<T> transforms(tss) {
+    return List<T>.empty(growable: true);
+  }
+
+  @override
+  T? transform(ts) {
+    return null;
+  }
+
+  @override
   Future<void> fetch({Map<String, dynamic>? params, bool isMock: false}) async {
-    this.toLoadingStatus();
-    TimeHelper.sleep();
-    this.toLoadedStatus();
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (params == null) {
+        params = {};
+      }
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        data = {"items": this.options.getMockItems()};
+      } else {
+        Response response =
+            await Requester.get(this.options.getBaseUrl(), params);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._items = data["items"];
+      this.itemsSC.add(this.items);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
   }
 
   @override
   Future<void> fetchAfterId(String afterId,
       {Map<String, dynamic>? params, bool isMock = false}) async {
-    this.toLoadingStatus();
-    TimeHelper.sleep();
-    this.toLoadedStatus();
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (params == null) {
+        params = {};
+      }
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        data = {"items": this.options.getMockItems()?.sublist(0, 6)};
+      } else {
+        Response response =
+            await Requester.get(this.options.getBaseUrl(), params);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._items = [
+        ...(this._items ?? []),
+        ...(data["items"] ?? []),
+      ];
+      this.itemsSC.add(this.items);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
   }
 
   @override
   Future<void> get(String id,
       {Map<String, dynamic>? params, bool isMock: false}) async {
-    this.toLoadingStatus();
-    TimeHelper.sleep();
-    this.toLoadedStatus();
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (params == null) {
+        params = {};
+      }
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        Map<String, dynamic> mock = this
+            .options
+            .getMockItems()!
+            .firstWhere((element) => id == element["product_id"]);
+        data = {"data": mock};
+      } else {
+        Response response =
+            await Requester.get(this.options.getBaseUrl(), params);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._data = data["data"];
+      this.dataSC.add(this.data);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
   }
 
   @override
@@ -175,7 +265,7 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   }
 
   @override
-  void alertError(dynamic e){
+  void alertError(dynamic e) {
     String title = e?["code"] ?? "Error";
     String message = e?["message"] ?? e;
 
@@ -277,47 +367,19 @@ class BaseUIRepository implements IBaseUIRepository {
 class NewRepository implements IRepositories {
   final BuildContext buildCtx;
   final IConfig config;
-  ProductRepository? _productRepository;
-  BannerRepository? _bannerRepository;
+
   CategoryRepository? _categoryRepository;
-  CartRepository? _cartRepository;
-  NotificationRepository? _notificationRepository;
+  CourseRepository? _courseRepository;
+  DiscoveryRepository? _discoveryRepository;
+  LeaderBoardRepository? _leaderBoardRepository;
+  MyCourseRepository? _myCourseRepository;
+  QuizRepository? _quizRepository;
+  SubjectRepository? _subjectRepository;
 
   NewRepository({
     required this.buildCtx,
     required this.config,
   });
-
-  @override
-  ProductRepository productRepository() {
-    if (this._productRepository == null) {
-      this._productRepository = ProductRepository(
-        buildCtx: this.buildCtx,
-        config: this.config,
-        options: NewRepositoryOptions(
-          baseUrl: "${config.baseAPI()}/products",
-          mockItems: mockProducts,
-          mockItem: mockProductDetail,
-        ),
-      );
-    }
-    return this._productRepository!;
-  }
-
-  @override
-  BannerRepository bannerRepository() {
-    if (this._bannerRepository == null) {
-      this._bannerRepository = BannerRepository(
-        buildCtx: this.buildCtx,
-        config: this.config,
-        options: NewRepositoryOptions(
-          baseUrl: "${config.baseAPI()}/banners",
-          mockItems: mockBanners,
-        ),
-      );
-    }
-    return this._bannerRepository!;
-  }
 
   @override
   CategoryRepository categoryRepository() {
@@ -326,8 +388,7 @@ class NewRepository implements IRepositories {
         buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
-          baseUrl: "${config.baseAPI()}/categories",
-          mockItems: mockCategories,
+          baseUrl: "${this.config.baseAPI()}/category",
         ),
       );
     }
@@ -335,38 +396,93 @@ class NewRepository implements IRepositories {
   }
 
   @override
-  CartRepository cartRepository() {
-    if (this._cartRepository == null) {
-      this._cartRepository = CartRepository(
+  CourseRepository courseRepository() {
+    if (this._courseRepository == null) {
+      this._courseRepository = CourseRepository(
         buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
-          baseUrl: "${config.baseAPI()}/cart",
-          mockItem: mockCart,
+          baseUrl: "${this.config.baseAPI()}/courses?category_id=none",
         ),
       );
     }
-    return this._cartRepository!;
+    return this._courseRepository!;
   }
 
   @override
-  NotificationRepository notificationRepository() {
-    if (this._notificationRepository == null) {
-      this._notificationRepository = NotificationRepository(
+  DiscoveryRepository discoveryRepository() {
+    if (this._discoveryRepository == null) {
+      this._discoveryRepository = DiscoveryRepository(
         buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
-          baseUrl: "${config.baseAPI()}/notifications",
-          mockItems: mockNotifications,
+          baseUrl: "",
         ),
       );
     }
-    return this._notificationRepository!;
+    return this._discoveryRepository!;
+  }
+
+  @override
+  LeaderBoardRepository leaderBoardRepository() {
+    if (this._leaderBoardRepository == null) {
+      this._leaderBoardRepository = LeaderBoardRepository(
+        buildCtx: this.buildCtx,
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${this.config.baseAPI()}/leaderboard",
+        ),
+      );
+    }
+    return this._leaderBoardRepository!;
+  }
+
+  @override
+  MyCourseRepository myCourseRepository() {
+    if (this._myCourseRepository == null) {
+      this._myCourseRepository = MyCourseRepository(
+        buildCtx: this.buildCtx,
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${this.config.baseAPI()}/courses/my",
+        ),
+      );
+    }
+    return this._myCourseRepository!;
+  }
+
+  @override
+  QuizRepository quizRepository() {
+    if (this._quizRepository == null) {
+      this._quizRepository = QuizRepository(
+        buildCtx: this.buildCtx,
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${this.config.baseAPI()}",
+        ),
+      );
+    }
+    return this._quizRepository!;
+  }
+
+  @override
+  SubjectRepository subjectRepository() {
+    if (this._subjectRepository == null) {
+      this._subjectRepository = SubjectRepository(
+        buildCtx: this.buildCtx,
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${this.config.baseAPI()}",
+        ),
+      );
+    }
+    return this._subjectRepository!;
   }
 }
 
 class NewRepositoryOptions implements IRepositoryOptions {
   final String baseUrl;
+  final String? findUrl;
   final String? addUrl;
   final String? updateUrl;
   final String? deleteUrl;
@@ -375,6 +491,7 @@ class NewRepositoryOptions implements IRepositoryOptions {
 
   NewRepositoryOptions({
     required this.baseUrl,
+    this.findUrl,
     this.addUrl,
     this.updateUrl,
     this.deleteUrl,
@@ -385,6 +502,11 @@ class NewRepositoryOptions implements IRepositoryOptions {
   @override
   String getBaseUrl() {
     return this.baseUrl;
+  }
+
+  @override
+  String? getFindUrl() {
+    return this.findUrl;
   }
 
   @override

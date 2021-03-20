@@ -1,24 +1,32 @@
 import 'dart:async';
-import 'package:singh_architecture/repositories/banner_repository.dart';
-import 'package:singh_architecture/repositories/cart_repository.dart';
-import 'package:singh_architecture/repositories/category_repository.dart';
-import 'package:singh_architecture/repositories/notification_repository.dart';
-import 'package:singh_architecture/repositories/product_repository.dart';
+import 'package:o_learning_x/repositories/category_repository.dart';
+import 'package:o_learning_x/repositories/course_repository.dart';
+import 'package:o_learning_x/repositories/discovery_repository.dart';
+import 'package:o_learning_x/repositories/leader_board_repository.dart';
+import 'package:o_learning_x/repositories/my_course_repository.dart';
+import 'package:o_learning_x/repositories/quiz_repository.dart';
+import 'package:o_learning_x/repositories/subject_repository.dart';
 
 abstract class IRepositories {
-  ProductRepository productRepository();
-
-  BannerRepository bannerRepository();
-
   CategoryRepository categoryRepository();
 
-  CartRepository cartRepository();
+  CourseRepository courseRepository();
 
-  NotificationRepository notificationRepository();
+  DiscoveryRepository discoveryRepository();
+
+  LeaderBoardRepository leaderBoardRepository();
+
+  MyCourseRepository myCourseRepository();
+
+  QuizRepository quizRepository();
+
+  SubjectRepository subjectRepository();
 }
 
 abstract class IRepositoryOptions {
   String getBaseUrl();
+
+  String? getFindUrl();
 
   String? getAddUrl();
 
@@ -40,6 +48,10 @@ abstract class IBaseDataRepository<T> {
 
   String get errorMessage;
 
+  List<T> get items;
+
+  T? get data;
+
   StreamController<bool> get isLoadingSC;
 
   StreamController<bool> get isLoadedSC;
@@ -57,6 +69,10 @@ abstract class IBaseDataRepository<T> {
   void toLoadedStatus();
 
   void toErrorStatus(dynamic e);
+
+  List<T> transforms(dynamic tss);
+
+  T? transform(dynamic ts);
 
   Future<void> fetch({
     Map<String, dynamic>? params,

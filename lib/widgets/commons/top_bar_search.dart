@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:singh_architecture/styles/colors.dart';
-import 'package:singh_architecture/styles/fonts.dart';
+import 'package:o_learning_x/styles/colors.dart';
+import 'package:o_learning_x/styles/fonts.dart';
 
 class TopBarSearch extends StatefulWidget {
   final Function(String q) onSearch;

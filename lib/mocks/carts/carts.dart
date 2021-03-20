@@ -1,3 +1,0 @@
-Map<String, dynamic> mockCart = {
-
-};

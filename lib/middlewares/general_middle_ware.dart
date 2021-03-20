@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:singh_architecture/configs/config.dart';
-import 'package:singh_architecture/cores/context.dart';
+import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/context.dart';
 
 class GeneralMiddleWare extends StatefulWidget {
   final IContext context;

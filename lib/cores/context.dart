@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:singh_architecture/configs/config.dart';
-import 'package:singh_architecture/cores/shared_preferences.dart';
-import 'package:singh_architecture/repositories/base_repository.dart';
-import 'package:singh_architecture/repositories/locale_repository.dart';
-import 'package:singh_architecture/repositories/types.dart';
+import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/shared_preferences.dart';
+import 'package:o_learning_x/repositories/base_repository.dart';
+import 'package:o_learning_x/repositories/locale_repository.dart';
+import 'package:o_learning_x/repositories/types.dart';
 
 abstract class IContext {
   Future<void> initial();

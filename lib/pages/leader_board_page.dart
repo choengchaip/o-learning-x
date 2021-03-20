@@ -1,30 +1,25 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
 
-class ScaffoldMiddleWare extends StatefulWidget {
+class LeaderBoardPage extends StatefulWidget {
   final IContext context;
   final IConfig config;
-  final Widget child;
 
-  ScaffoldMiddleWare({
+  LeaderBoardPage({
     required this.context,
     required this.config,
-    required this.child,
   });
 
   @override
   State<StatefulWidget> createState() {
-    return ScaffoldMiddleWareState();
+    return LeaderBoardPageState();
   }
 }
 
-class ScaffoldMiddleWareState extends State<ScaffoldMiddleWare> {
+class LeaderBoardPageState extends State<LeaderBoardPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: widget.child,
-    );
+    return Container();
   }
 }

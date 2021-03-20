@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:singh_architecture/configs/config.dart';
-import 'package:singh_architecture/cores/constants.dart';
-import 'package:singh_architecture/repositories/base_repository.dart';
-import 'package:singh_architecture/repositories/types.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/constants.dart';
+import 'package:o_learning_x/repositories/base_repository.dart';
+import 'package:o_learning_x/repositories/types.dart';
 
 class LocaleRepository extends BaseDataRepository {
   final BuildContext buildCtx;

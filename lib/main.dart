@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:singh_architecture/pages/launch_screen.dart';
-import 'package:singh_architecture/repositories/page_repository.dart';
+import 'package:o_learning_x/pages/launch_screen.dart';
+import 'package:o_learning_x/repositories/page_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
