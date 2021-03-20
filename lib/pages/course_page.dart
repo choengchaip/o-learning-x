@@ -4,6 +4,7 @@ import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
 import 'package:o_learning_x/widgets/commons/loading_stack.dart';
 import 'package:o_learning_x/widgets/courses/course_section.dart';
+import 'package:o_learning_x/widgets/courses/course_select.dart';
 
 class CoursePage extends StatefulWidget {
   final IContext context;
@@ -105,6 +106,15 @@ class CoursePageState extends State<CoursePage> {
                 ),
               ),
             ),
+          ),
+          CourseSelect(
+            context: widget.context,
+            config: widget.config,
+            isExpand: this.courseExpand,
+            items: widget.context.repositories().myCourseRepository().items,
+            onChanged: (id, name) {
+              this.courseExpand = !this.courseExpand;
+            },
           ),
         ],
       ),
