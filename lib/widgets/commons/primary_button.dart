@@ -11,6 +11,7 @@ class PrimaryButton extends StatefulWidget {
   final Color? textColor;
   final Color? borderColor;
   final EdgeInsets? margin;
+  final double? width;
 
   PrimaryButton({
     required this.onClick,
@@ -20,6 +21,7 @@ class PrimaryButton extends StatefulWidget {
     this.textColor,
     this.borderColor,
     this.margin,
+    this.width,
   });
 
   @override
@@ -34,7 +36,7 @@ class PrimaryButtonState extends State<PrimaryButton> {
     return GestureDetector(
       onTap: widget.onClick,
       child: Container(
-        width: 150,
+        width: widget.width,
         height: 40,
         padding: EdgeInsets.only(
           left: 16,

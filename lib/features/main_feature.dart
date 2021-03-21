@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
 import 'package:o_learning_x/pages/base_page.dart';
-import 'package:o_learning_x/pages/category_page.dart';
 import 'package:o_learning_x/pages/course_page.dart';
-import 'package:o_learning_x/pages/leader_board_page.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
@@ -65,14 +63,14 @@ class MainFeatureState extends State<MainFeature> {
                         context: widget.context,
                         config: widget.config,
                       ),
-                      CategoryPage(
-                        context: widget.context,
-                        config: widget.config,
-                      ),
-                      LeaderBoardPage(
-                        context: widget.context,
-                        config: widget.config,
-                      ),
+                      // CategoryPage(
+                      //   context: widget.context,
+                      //   config: widget.config,
+                      // ),
+                      // LeaderBoardPage(
+                      //   context: widget.context,
+                      //   config: widget.config,
+                      // ),
                     ],
                   ),
                 ),

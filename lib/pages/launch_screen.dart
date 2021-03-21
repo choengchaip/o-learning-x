@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
 import 'package:o_learning_x/features/main_feature.dart';
+import 'package:o_learning_x/features/welcome_feature.dart';
 import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 
@@ -43,18 +44,36 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ScaffoldMiddleWare(
-            context: this.myContext,
-            config: this.config,
-            child: MainFeature(
-              context: myContext,
-              config: config,
+      Map<String, dynamic>? user =
+          this.myContext.sharedPreferences().getAuthentication();
+
+      if (user == null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ScaffoldMiddleWare(
+              context: this.myContext,
+              config: this.config,
+              child: WelcomeFeature(
+                context: myContext,
+                config: config,
+              ),
             ),
           ),
-        ),
-      );
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ScaffoldMiddleWare(
+              context: this.myContext,
+              config: this.config,
+              child: MainFeature(
+                context: myContext,
+                config: config,
+              ),
+            ),
+          ),
+        );
+      }
 
       widget.launchScreenRepository.toLoadedStatus();
     } catch (e) {

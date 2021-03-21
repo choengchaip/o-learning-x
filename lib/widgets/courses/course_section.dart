@@ -72,7 +72,7 @@ class CourseSectionState extends State<CourseSection> {
             spacing: 16,
             runSpacing: 16,
             children: List.generate(
-              widget.module.SubModules.length ?? 0,
+              widget.module.SubModules.length,
               (index) {
                 return Container();
               },

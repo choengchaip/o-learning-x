@@ -24,13 +24,13 @@ class CourseModel {
 
   factory CourseModel.fromJson(Map<String, dynamic> rawJson) {
     return CourseModel(
-      Id: rawJson["course_id"],
-      Title: rawJson["course_name"],
-      Description: rawJson["course_description"],
-      Image: rawJson["course_image"],
-      CategoryId: rawJson["category_id"],
-      Current: rawJson["current"],
-      Max: rawJson["max"],
+      Id: rawJson["course_id"] ?? "",
+      Title: rawJson["course_name"] ?? "",
+      Description: rawJson["course_description"] ?? "",
+      Image: rawJson["course_image"] ?? "",
+      CategoryId: rawJson["category_id"] ?? "",
+      Current: rawJson["current"] ?? 0,
+      Max: rawJson["max"] ?? 0,
       Modules: ModuleModel.toList(rawJson["modules"]),
     );
   }

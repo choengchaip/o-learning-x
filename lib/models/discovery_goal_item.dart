@@ -2,12 +2,12 @@
 
 class DiscoveryGoalModel {
   final int Minute;
-  final String Name;
-  final String SpendTitle;
+  final String? Name;
+  final String? SpendTitle;
 
   DiscoveryGoalModel({
     required this.Minute,
-    required this.Name,
-    required this.SpendTitle,
+    this.Name,
+    this.SpendTitle,
   });
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/models/discovery_model.dart';
 import 'package:o_learning_x/repositories/base_repository.dart';
 import 'package:o_learning_x/repositories/types.dart';
 
-class DiscoveryRepository extends BaseDataRepository {
+class DiscoveryRepository extends BaseDataRepository<DiscoveryModel> {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
@@ -68,5 +69,15 @@ class DiscoveryRepository extends BaseDataRepository {
 
   popAliasFromList() {
     this.aliases.removeLast();
+  }
+
+  @override
+  List<DiscoveryModel> transforms(tss) {
+    return DiscoveryModel.toList(tss);
+  }
+
+  @override
+  DiscoveryModel? transform(ts) {
+    return DiscoveryModel.fromJson(ts);
   }
 }

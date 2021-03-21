@@ -15,14 +15,30 @@ class MyCourseRepository extends BaseDataRepository<CourseModel> {
     required this.options,
   }) : super(buildCtx, config, options);
 
-
   @override
   List<CourseModel> transforms(tss) {
-    return CourseModel.toList(tss);
+    List<CourseModel> ss = List<CourseModel>.empty(growable: true);
+    try {
+      ss = CourseModel.toList(tss);
+      return ss;
+    } catch (e) {
+      super.alertError(e);
+      super.toErrorStatus(e);
+      return ss;
+    }
   }
 
   @override
   CourseModel? transform(ts) {
-    return CourseModel.fromJson(ts);
+    CourseModel? s;
+    try {
+      s = CourseModel.fromJson(ts);
+      return s;
+    } catch (e) {
+      print("CourseModel transform error");
+      super.alertError(e);
+      super.toErrorStatus(e);
+      return s;
+    }
   }
 }

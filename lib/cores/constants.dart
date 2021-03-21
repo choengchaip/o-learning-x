@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:o_learning_x/models/discovery_goal_item.dart';
+
 enum LANGUAGE { TH, EN }
 
 class Locales {
@@ -41,3 +43,27 @@ class Locales {
     return "view_more";
   }
 }
+
+class Ratio {
+  Ratio._();
+
+  static double get ratio32 => 3 / 2;
+
+  static double get ratio43 => 4 / 3;
+
+  static double get ratio78 => 7 / 8;
+
+  static double get ration169 => 16 / 9;
+}
+
+List<DiscoveryGoalModel> discoveryGoalItems = [
+  DiscoveryGoalModel(
+    Minute: 5,
+  ),
+  DiscoveryGoalModel(
+    Minute: 10,
+  ),
+  DiscoveryGoalModel(
+    Minute: 20,
+  ),
+];

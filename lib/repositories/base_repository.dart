@@ -7,6 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/shared_preferences.dart';
+import 'package:o_learning_x/mocks/courses/courses.dart';
+import 'package:o_learning_x/mocks/discoveries/discovery_choices.dart';
 import 'package:o_learning_x/repositories/category_repository.dart';
 import 'package:o_learning_x/repositories/course_repository.dart';
 import 'package:o_learning_x/repositories/discovery_repository.dart';
@@ -23,6 +26,7 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+  final ISharedPreferences? sharedPreferences;
 
   bool _isLoading = false;
   bool _isLoaded = false;
@@ -41,8 +45,9 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   BaseDataRepository(
     this.buildCtx,
     this.config,
-    this.options,
-  ) {
+    this.options, {
+    this.sharedPreferences,
+  }) {
     this.initial();
   }
 
@@ -227,22 +232,91 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   }
 
   @override
+  Future<void> add(
+      {required Map<String, dynamic> payload, bool isMock = false}) async {
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        data = {"data": this.options.getMockItem()};
+      } else {
+        Response response = await Requester.post(
+            this.options.getAddUrl() ?? this.options.getBaseUrl(), payload);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._data = data["data"];
+      this.dataSC.add(this.data);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
+  }
+
+  @override
+  Future<void> update(String id,
+      {required Map<String, dynamic> payload, bool isMock = false}) async {
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        data = {"data": this.options.getMockItem()};
+      } else {
+        Response response = await Requester.put(
+            this.options.getUpdateUrl() ?? this.options.getBaseUrl(), payload);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._data = data["data"];
+      this.dataSC.add(this.data);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
+  }
+
+  @override
+  Future<void> delete(String id, {bool isMock = false}) async {
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        data = {"data": this.options.getMockItem()};
+      } else {
+        Response response = await Requester.delete(
+            this.options.getDeleteUrl() ?? this.options.getBaseUrl());
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._data = data["data"];
+      this.dataSC.add(this.data);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
+  }
+
+  @override
   void forceValueNotify() {
-    this._isLoadingSC.add(true);
-    this._isLoadedSC.add(false);
-    this._isErrorSC.add(false);
-    this._errorMessageSC.add("");
-
-    this._itemsSC.add(null);
-    this._dataSC.add(null);
-
-    this._isLoadingSC.add(this.isLoading);
-    this._isLoadedSC.add(this.isLoaded);
-    this._isErrorSC.add(this.isError);
-    this._errorMessageSC.add(this.errorMessage);
-
-    this._itemsSC.add(this.items);
-    this._dataSC.add(this.data);
+    this._isLoading = !this._isLoading;
+    this._isLoadingSC.add(this._isLoading);
+    this._isLoading = !this._isLoading;
+    this._isLoadingSC.add(this._isLoading);
   }
 
   @override
@@ -266,12 +340,17 @@ class BaseDataRepository<T> implements IBaseDataRepository {
 
   @override
   void alertError(dynamic e) {
-    String title = e?["code"] ?? "Error";
-    String message = e?["message"] ?? e;
+    String title = "Error";
+    dynamic message = e;
+
+    if (e is Map && message is Map) {
+      title = e["code"] ?? "Error";
+      message = e["message"] ?? e;
+    }
 
     Flushbar(
       title: title,
-      message: message,
+      message: message.toString(),
       duration: Duration(seconds: 3),
       flushbarStyle: FlushbarStyle.GROUNDED,
     )..show(this.buildCtx);
@@ -367,6 +446,7 @@ class BaseUIRepository implements IBaseUIRepository {
 class NewRepository implements IRepositories {
   final BuildContext buildCtx;
   final IConfig config;
+  final ISharedPreferences? sharedPreferences;
 
   CategoryRepository? _categoryRepository;
   CourseRepository? _courseRepository;
@@ -379,6 +459,7 @@ class NewRepository implements IRepositories {
   NewRepository({
     required this.buildCtx,
     required this.config,
+    this.sharedPreferences,
   });
 
   @override
@@ -403,6 +484,7 @@ class NewRepository implements IRepositories {
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}/courses?category_id=none",
+          mockItems: mockCourses,
         ),
       );
     }
@@ -417,6 +499,7 @@ class NewRepository implements IRepositories {
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "",
+          mockItems: mockDiscoveries,
         ),
       );
     }

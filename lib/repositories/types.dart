@@ -48,7 +48,7 @@ abstract class IBaseDataRepository<T> {
 
   String get errorMessage;
 
-  List<T> get items;
+  List<T>? get items;
 
   T? get data;
 
@@ -70,7 +70,7 @@ abstract class IBaseDataRepository<T> {
 
   void toErrorStatus(dynamic e);
 
-  List<T> transforms(dynamic tss);
+  List<T>? transforms(dynamic tss);
 
   T? transform(dynamic ts);
 
@@ -88,6 +88,22 @@ abstract class IBaseDataRepository<T> {
   Future<void> get(
     String id, {
     Map<String, dynamic>? params,
+    bool isMock: false,
+  });
+
+  Future<void> add({
+    required Map<String, dynamic> payload,
+    bool isMock: false,
+  });
+
+  Future<void> update(
+    String id, {
+    required Map<String, dynamic> payload,
+    bool isMock: false,
+  });
+
+  Future<void> delete(
+    String id, {
     bool isMock: false,
   });
 

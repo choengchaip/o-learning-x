@@ -47,7 +47,7 @@ class QuestionModel {
       Question: rawJson['title_description'] ?? "",
       Note: rawJson['note'] ?? "",
       Code: rawJson['code'] ?? "",
-      Choices: ChoiceModel.fromListJson(rawJson['choice']) ?? [],
+      Choices: ChoiceModel.fromListJson(rawJson['choice']),
       CorrectChoiceId: QuestionModel.getAnswerChoice(rawJson['choice']),
       CorrectChoiceIds: rawJson['correct_answer_ids'] ?? "",
       AnswerWrongMessage: rawJson['answer_wrong_message'] ?? "",
