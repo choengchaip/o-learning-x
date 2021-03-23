@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:o_learning_x/repositories/authentication_repository.dart';
 import 'package:o_learning_x/repositories/category_repository.dart';
 import 'package:o_learning_x/repositories/course_repository.dart';
 import 'package:o_learning_x/repositories/discovery_repository.dart';
@@ -8,6 +9,8 @@ import 'package:o_learning_x/repositories/quiz_repository.dart';
 import 'package:o_learning_x/repositories/subject_repository.dart';
 
 abstract class IRepositories {
+  AuthenticationRepository authenticationRepository();
+
   CategoryRepository categoryRepository();
 
   CourseRepository courseRepository();
@@ -108,6 +111,8 @@ abstract class IBaseDataRepository<T> {
   });
 
   void forceValueNotify();
+
+  void setInnerData(dynamic data);
 
   void initial();
 

@@ -21,9 +21,11 @@ abstract class ISharedPreferences {
   Map<String, dynamic>? getAuthentication();
 
   Future<void> setAuthentication({
-    required String token,
+    String? token,
     Map<String, dynamic>? others,
   });
+
+  Future<void> removeAuthentication();
 }
 
 class SharedPreferences implements ISharedPreferences {
@@ -81,13 +83,17 @@ class SharedPreferences implements ISharedPreferences {
 
   @override
   Future<void> setAuthentication({
-    required String token,
+    String? token,
     Map<String, dynamic>? others,
   }) async {
     String str = json.encode({
-      "token": token,
+      ...(token != null ? {"token": token} : {}),
       ...(others ?? {}),
     });
     return this.setString("authentication", str);
+  }
+
+  Future<void> removeAuthentication() {
+    return this.remove("authentication");
   }
 }

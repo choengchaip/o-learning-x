@@ -7,6 +7,7 @@ import 'package:o_learning_x/widgets/welcomes/welcome_discovery_choice.dart';
 import 'package:o_learning_x/widgets/welcomes/welcome_discovery_course.dart';
 import 'package:o_learning_x/widgets/welcomes/welcome_discovery_experience.dart';
 import 'package:o_learning_x/widgets/welcomes/welcome_discovery_goal.dart';
+import 'package:o_learning_x/widgets/welcomes/welcome_discovery_notification.dart';
 
 class WelcomeDiscoveryPage extends StatefulWidget {
   final IContext context;
@@ -69,6 +70,12 @@ class _WelcomeDiscoveryPageState extends State<WelcomeDiscoveryPage> {
                     rootPageRepository: widget.parentPageRepository,
                   ),
                   WelcomeDiscoveryGoal(
+                    context: widget.context,
+                    config: widget.config,
+                    parentPageRepository: this.pageRepository,
+                    rootPageRepository: widget.parentPageRepository,
+                  ),
+                  WelcomeDiscoveryNotification(
                     context: widget.context,
                     config: widget.config,
                     parentPageRepository: this.pageRepository,

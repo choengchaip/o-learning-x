@@ -10,6 +10,7 @@ import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/shared_preferences.dart';
 import 'package:o_learning_x/mocks/courses/courses.dart';
 import 'package:o_learning_x/mocks/discoveries/discovery_choices.dart';
+import 'package:o_learning_x/repositories/authentication_repository.dart';
 import 'package:o_learning_x/repositories/category_repository.dart';
 import 'package:o_learning_x/repositories/course_repository.dart';
 import 'package:o_learning_x/repositories/discovery_repository.dart';
@@ -26,7 +27,7 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
-  final ISharedPreferences? sharedPreferences;
+  final ISharedPreferences sharedPreferences;
 
   bool _isLoading = false;
   bool _isLoaded = false;
@@ -45,9 +46,9 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   BaseDataRepository(
     this.buildCtx,
     this.config,
-    this.options, {
+    this.options,
     this.sharedPreferences,
-  }) {
+  ) {
     this.initial();
   }
 
@@ -146,10 +147,13 @@ class BaseDataRepository<T> implements IBaseDataRepository {
         await TimeHelper.sleep();
         data = {"items": this.options.getMockItems()};
       } else {
-        Response response =
-            await Requester.get(this.options.getBaseUrl(), params);
+        Response response = await Requester.get(
+          this.options.getBaseUrl(),
+          params: params,
+          headers: this.sharedPreferences.getAuthentication(),
+        );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+        data = {"data": js};
       }
 
       this._items = data["items"];
@@ -177,8 +181,11 @@ class BaseDataRepository<T> implements IBaseDataRepository {
         await TimeHelper.sleep();
         data = {"items": this.options.getMockItems()?.sublist(0, 6)};
       } else {
-        Response response =
-            await Requester.get(this.options.getBaseUrl(), params);
+        Response response = await Requester.get(
+          this.options.getBaseUrl(),
+          params: params,
+          headers: this.sharedPreferences.getAuthentication(),
+        );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
         data = js;
       }
@@ -215,8 +222,11 @@ class BaseDataRepository<T> implements IBaseDataRepository {
             .firstWhere((element) => id == element["product_id"]);
         data = {"data": mock};
       } else {
-        Response response =
-            await Requester.get(this.options.getBaseUrl(), params);
+        Response response = await Requester.get(
+          this.options.getBaseUrl(),
+          params: params,
+          headers: this.sharedPreferences.getAuthentication(),
+        );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
         data = js;
       }
@@ -243,9 +253,12 @@ class BaseDataRepository<T> implements IBaseDataRepository {
         data = {"data": this.options.getMockItem()};
       } else {
         Response response = await Requester.post(
-            this.options.getAddUrl() ?? this.options.getBaseUrl(), payload);
+          this.options.getAddUrl() ?? this.options.getBaseUrl(),
+          payload,
+          headers: this.sharedPreferences.getAuthentication(),
+        );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+        data = {"data": js};
       }
 
       this._data = data["data"];
@@ -270,9 +283,12 @@ class BaseDataRepository<T> implements IBaseDataRepository {
         data = {"data": this.options.getMockItem()};
       } else {
         Response response = await Requester.put(
-            this.options.getUpdateUrl() ?? this.options.getBaseUrl(), payload);
+          this.options.getUpdateUrl() ?? this.options.getBaseUrl(),
+          payload,
+          headers: this.sharedPreferences.getAuthentication(),
+        );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+        data = {"data": js};
       }
 
       this._data = data["data"];
@@ -296,9 +312,11 @@ class BaseDataRepository<T> implements IBaseDataRepository {
         data = {"data": this.options.getMockItem()};
       } else {
         Response response = await Requester.delete(
-            this.options.getDeleteUrl() ?? this.options.getBaseUrl());
+          this.options.getDeleteUrl() ?? this.options.getBaseUrl(),
+          headers: this.sharedPreferences.getAuthentication(),
+        );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+        data = {"data": js};
       }
 
       this._data = data["data"];
@@ -317,6 +335,11 @@ class BaseDataRepository<T> implements IBaseDataRepository {
     this._isLoadingSC.add(this._isLoading);
     this._isLoading = !this._isLoading;
     this._isLoadingSC.add(this._isLoading);
+  }
+
+  @override
+  void setInnerData(data) {
+    return this._data = data;
   }
 
   @override
@@ -446,8 +469,9 @@ class BaseUIRepository implements IBaseUIRepository {
 class NewRepository implements IRepositories {
   final BuildContext buildCtx;
   final IConfig config;
-  final ISharedPreferences? sharedPreferences;
+  final ISharedPreferences sharedPreferences;
 
+  AuthenticationRepository? _authenticationRepository;
   CategoryRepository? _categoryRepository;
   CourseRepository? _courseRepository;
   DiscoveryRepository? _discoveryRepository;
@@ -459,8 +483,23 @@ class NewRepository implements IRepositories {
   NewRepository({
     required this.buildCtx,
     required this.config,
-    this.sharedPreferences,
+    required this.sharedPreferences,
   });
+
+  @override
+  AuthenticationRepository authenticationRepository() {
+    if (this._authenticationRepository == null) {
+      this._authenticationRepository = AuthenticationRepository(
+        buildCtx: this.buildCtx,
+        config: this.config,
+        sharedPreferences: this.sharedPreferences,
+        options: NewRepositoryOptions(
+          baseUrl: "${this.config.baseAPI()}",
+        ),
+      );
+    }
+    return this._authenticationRepository!;
+  }
 
   @override
   CategoryRepository categoryRepository() {
@@ -468,6 +507,7 @@ class NewRepository implements IRepositories {
       this._categoryRepository = CategoryRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}/category",
         ),
@@ -482,6 +522,7 @@ class NewRepository implements IRepositories {
       this._courseRepository = CourseRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}/courses?category_id=none",
           mockItems: mockCourses,
@@ -497,6 +538,7 @@ class NewRepository implements IRepositories {
       this._discoveryRepository = DiscoveryRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "",
           mockItems: mockDiscoveries,
@@ -512,6 +554,7 @@ class NewRepository implements IRepositories {
       this._leaderBoardRepository = LeaderBoardRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}/leaderboard",
         ),
@@ -526,6 +569,7 @@ class NewRepository implements IRepositories {
       this._myCourseRepository = MyCourseRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}/courses/my",
         ),
@@ -540,6 +584,7 @@ class NewRepository implements IRepositories {
       this._quizRepository = QuizRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}",
         ),
@@ -554,6 +599,7 @@ class NewRepository implements IRepositories {
       this._subjectRepository = SubjectRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}",
         ),

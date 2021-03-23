@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/shared_preferences.dart';
 import 'package:o_learning_x/models/question_model.dart';
 import 'package:o_learning_x/models/quiz_model.dart';
 import 'package:o_learning_x/models/sub_module_model.dart';
@@ -16,6 +17,7 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+  final ISharedPreferences sharedPreferences;
 
   late bool expandQuiz;
   late bool answerWrongAlert;
@@ -34,7 +36,8 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
     required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(buildCtx, config, options) {
+    required this.sharedPreferences,
+  }) : super(buildCtx, config, options, sharedPreferences) {
     this.expandQuiz = false;
     this.answerWrongAlert = false;
     this.isInitial = false;
@@ -159,7 +162,7 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
         data = {"data": mock};
       } else {
         Response response = await Requester.get(
-            "${this.config.baseAPI()}/submodule/title/$quizId", params);
+            "${this.config.baseAPI()}/submodule/title/$quizId", params: params);
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
         data = js;
       }

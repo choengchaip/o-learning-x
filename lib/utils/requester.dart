@@ -23,8 +23,8 @@ class Requester {
         (response.statusCode >= 400 && response.statusCode <= 599));
   }
 
-  static Future<http.Response> get(String url, Map<String, dynamic> params,
-      {Map<String, dynamic>? headers}) async {
+  static Future<http.Response> get(String url,
+      {Map<String, dynamic>? params, Map<String, dynamic>? headers}) async {
     try {
       http.Response response = await http.get(
           Uri.parse(url).replace(queryParameters: params),

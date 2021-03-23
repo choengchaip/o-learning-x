@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/features/login_feature.dart';
+import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
 import 'package:o_learning_x/pages/base_page.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
@@ -51,27 +54,21 @@ class WelcomeHomePageState extends State<WelcomeHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // GestureDetector(
-                //   onTap: (){
-                //     authRepo.login();
-                //     pageLauncher(Index(), context);
-                //   },
-                //   child: Container(
-                //     child: Text(
-                //       'คลิกเพื่อข้ามขั้นตอน (ทดสอบ)',
-                //       style: TextStyle(
-                //         color: Theme.of(context).primaryColor,
-                //         fontSize: fontSizeP,
-                //         fontWeight: FontWeight.bold,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 GestureDetector(
                   onTap: () {
-                    // pageLauncher(MainPage(), context);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (_) => AuthenticationPage()));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ScaffoldMiddleWare(
+                              context: widget.context,
+                              config: widget.config,
+                              child: LoginFeature(
+                                context: widget.context,
+                                config: widget.config,
+                              ));
+                        },
+                      ),
+                    );
                   },
                   child: Container(
                     child: Text(

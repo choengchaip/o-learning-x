@@ -51,6 +51,7 @@ class Context implements IContext {
       this._localeRepository = LocaleRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "",
         ),

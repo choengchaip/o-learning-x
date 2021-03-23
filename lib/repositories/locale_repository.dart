@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/constants.dart';
+import 'package:o_learning_x/cores/shared_preferences.dart';
 import 'package:o_learning_x/repositories/base_repository.dart';
 import 'package:o_learning_x/repositories/types.dart';
 
@@ -10,13 +11,16 @@ class LocaleRepository extends BaseDataRepository {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+  final ISharedPreferences sharedPreferences;
+
   late Map<String, dynamic> _words;
 
   LocaleRepository({
     required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(buildCtx, config, options);
+    required this.sharedPreferences,
+  }) : super(buildCtx, config, options, sharedPreferences);
 
   Future<void> loadLocale({LANGUAGE? lang}) async {
     late String langStr;
