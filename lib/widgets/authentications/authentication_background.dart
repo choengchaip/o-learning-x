@@ -28,9 +28,10 @@ class _AuthenticationBackgroundState
 
   @override
   void dispose() {
+    super.dispose();
+
     this.animatedTicker.close();
     this.animatedCounter.cancel();
-    super.dispose();
   }
 
   @override

@@ -117,19 +117,14 @@ class AuthenticationRepository extends BaseDataRepository {
 
       await this.sharedPreferences.setAuthentication(token: data["data"]);
 
-      this.toLoadedStatus();
-
       response = await Requester.put(
-          "${this.options.getBaseUrl()}/users/profile",
-          {
-            "name": this.nameText,
-          },
+          "${this.options.getBaseUrl()}/users/profile", {"name": this.nameText},
           headers: this.sharedPreferences.getAuthentication());
 
       await this.fetchMe();
 
       if (this.currentCourseId != '') {
-        response = await Requester.put(
+        response = await Requester.post(
             "${this.options.getBaseUrl()}/courses/my",
             {
               "course_id": this.currentCourseId,
@@ -137,6 +132,8 @@ class AuthenticationRepository extends BaseDataRepository {
             },
             headers: this.sharedPreferences.getAuthentication());
       }
+
+      this.toLoadedStatus();
     } catch (e) {
       this.alertError(e);
       this.toErrorStatus(e);

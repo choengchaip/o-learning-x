@@ -152,8 +152,8 @@ class BaseDataRepository<T> implements IBaseDataRepository {
           params: params,
           headers: this.sharedPreferences.getAuthentication(),
         );
-        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = {"data": js};
+        List<dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = {"items": js};
       }
 
       this._items = data["items"];
@@ -186,8 +186,8 @@ class BaseDataRepository<T> implements IBaseDataRepository {
           params: params,
           headers: this.sharedPreferences.getAuthentication(),
         );
-        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+        List<dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = {"items": js};
       }
 
       this._items = [
@@ -524,7 +524,7 @@ class NewRepository implements IRepositories {
         config: this.config,
         sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
-          baseUrl: "${this.config.baseAPI()}/courses?category_id=none",
+          baseUrl: "${this.config.baseAPI()}/courses",
           mockItems: mockCourses,
         ),
       );

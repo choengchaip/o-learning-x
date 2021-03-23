@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
-import 'package:o_learning_x/features/register_feature.dart';
+import 'package:o_learning_x/features/login_feature.dart';
 import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
@@ -10,24 +10,24 @@ import 'package:o_learning_x/styles/fonts.dart';
 import 'package:o_learning_x/widgets/authentications/authentication_background.dart';
 import 'package:o_learning_x/widgets/commons/curve_button.dart';
 
-class LoginHome extends StatefulWidget {
+class RegisterHome extends StatefulWidget {
   final IContext context;
   final IConfig config;
   final PageRepository parentPageRepository;
 
-  LoginHome({
+  RegisterHome({
     required this.context,
     required this.config,
     required this.parentPageRepository,
   });
 
   @override
-  _LoginHomeState createState() {
-    return _LoginHomeState();
+  _RegisterHomeState createState() {
+    return _RegisterHomeState();
   }
 }
 
-class _LoginHomeState extends State<LoginHome> {
+class _RegisterHomeState extends State<RegisterHome> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +53,7 @@ class _LoginHomeState extends State<LoginHome> {
                           return ScaffoldMiddleWare(
                             context: widget.context,
                             config: widget.config,
-                            child: RegisterFeature(
+                            child: LoginFeature(
                               context: widget.context,
                               config: widget.config,
                             ),
@@ -64,7 +64,7 @@ class _LoginHomeState extends State<LoginHome> {
                   },
                   child: Container(
                     child: Text(
-                      "sign_up",
+                      "login",
                       style: TextStyle(
                         color: colorGray,
                         fontSize: p,
@@ -101,7 +101,7 @@ class _LoginHomeState extends State<LoginHome> {
             ),
           ),
           CurveButton(
-            title: "login_button",
+            title: "register_button",
             onClick: () {
               widget.parentPageRepository.nextPage();
             },

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/features/login_feature.dart';
+import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
@@ -38,7 +40,16 @@ class _WelcomeDiscoveryNotificationState
   }
 
   void proceed() {
-
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) {
+      return ScaffoldMiddleWare(
+          context: widget.context,
+          config: widget.config,
+          child: LoginFeature(
+            context: widget.context,
+            config: widget.config,
+          ));
+    }), (route) => false);
   }
 
   @override
@@ -79,8 +90,8 @@ class _WelcomeDiscoveryNotificationState
                   Container(
                     margin: EdgeInsets.only(top: 16, bottom: 16),
                     height: 175,
-                    child: Image.asset(
-                        'lib/statics/discovery_notification.png'),
+                    child:
+                        Image.asset('lib/statics/discovery_notification.png'),
                   ),
                   Container(
                     child: Text(
@@ -106,8 +117,7 @@ class _WelcomeDiscoveryNotificationState
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 16),
-                      padding:
-                      EdgeInsets.only(top: 14, bottom: 14, left: 16),
+                      padding: EdgeInsets.only(top: 14, bottom: 14, left: 16),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [

@@ -34,6 +34,7 @@ class LaunchScreenState extends State<LaunchScreen> {
       config: config,
     );
 
+    widget.launchScreenRepository.initial();
     widget.launchScreenRepository.toLoadingStatus();
     this.initialConfig();
   }
@@ -44,7 +45,7 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
 
-      this.myContext.repositories().authenticationRepository().logout();
+      // this.myContext.repositories().authenticationRepository().logout();
       Map<String, dynamic>? user = this.myContext.sharedPreferences().getAuthentication();
 
       if (user == null) {

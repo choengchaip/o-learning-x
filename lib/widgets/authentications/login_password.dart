@@ -100,6 +100,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                       key: formKey,
                       child: TextFormField(
                         obscureText: true,
+                        controller: this.passwordText,
                         focusNode: this.passwordFocus,
                         decoration: InputDecoration(
                           errorStyle: TextStyle(height: 0),

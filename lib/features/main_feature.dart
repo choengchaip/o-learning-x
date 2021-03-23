@@ -33,6 +33,7 @@ class MainFeatureState extends State<MainFeature> {
 
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
+    this.pageRepository.jumpTo(0);
   }
 
   @override
@@ -143,7 +144,7 @@ class MainFeatureState extends State<MainFeature> {
                                     width: 50,
                                     child: Icon(
                                       Icons.book_rounded,
-                                      color: snapshot.data == 0
+                                      color: snapshot.data == 1
                                           ? colorPrimary
                                           : colorGrayDark,
                                     ),

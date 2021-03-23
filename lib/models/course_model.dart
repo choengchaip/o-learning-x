@@ -35,7 +35,7 @@ class CourseModel {
     );
   }
 
-  static List<CourseModel> toList(List<Map<String, dynamic>>? rawItems) {
+  static List<CourseModel> toList(List<dynamic>? rawItems) {
     if (rawItems == null) {
       return [];
     }

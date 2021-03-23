@@ -9,45 +9,44 @@ import 'package:o_learning_x/styles/fonts.dart';
 import 'package:o_learning_x/widgets/commons/curve_button.dart';
 import 'package:o_learning_x/widgets/commons/header_back_button.dart';
 
-class LoginEmail extends StatefulWidget {
+class RegisterName extends StatefulWidget {
   final IContext context;
   final IConfig config;
   final PageRepository parentPageRepository;
 
-  LoginEmail({
+  RegisterName({
     required this.context,
     required this.config,
     required this.parentPageRepository,
   });
 
   @override
-  _LoginEmailState createState() {
-    return _LoginEmailState();
+  _RegisterNameState createState() {
+    return _RegisterNameState();
   }
 }
 
-class _LoginEmailState extends State<LoginEmail> {
+class _RegisterNameState extends State<RegisterName> {
   final formKey = GlobalKey<FormState>();
-  late StreamController<bool> emailValid;
-  late TextEditingController emailText;
-  late FocusNode emailFocus;
+  late StreamController<bool> nameValid;
+  late TextEditingController nameText;
+  late FocusNode nameFocus;
 
   @override
   void initState() {
     super.initState();
 
-    this.emailValid = StreamController<bool>();
-    this.emailValid.add(false);
-    this.emailText = TextEditingController(text: "");
-    this.emailFocus = FocusNode();
-    // this.emailFocus.requestFocus();
+    this.nameValid = StreamController<bool>();
+    this.nameValid.add(false);
+    this.nameText = TextEditingController(text: "");
+    this.nameFocus = FocusNode();
 
     if (widget.context
         .repositories()
         .authenticationRepository()
-        .emailText
+        .nameText
         .isNotEmpty) {
-      this.emailValid.add(true);
+      this.nameValid.add(true);
     }
   }
 
@@ -55,7 +54,7 @@ class _LoginEmailState extends State<LoginEmail> {
   void dispose() {
     super.dispose();
 
-    this.emailValid.close();
+    this.nameValid.close();
   }
 
   @override
@@ -72,10 +71,10 @@ class _LoginEmailState extends State<LoginEmail> {
           HeaderBackButton(
             backTitle: "back",
             onBack: () {
-              this.emailFocus.unfocus();
+              this.nameFocus.unfocus();
               widget.parentPageRepository.prevPage();
             },
-            tailTitle: '1/2',
+            tailTitle: '1/3',
           ),
           Expanded(
             child: Container(
@@ -85,7 +84,7 @@ class _LoginEmailState extends State<LoginEmail> {
                   Container(
                     margin: EdgeInsets.only(bottom: 48),
                     child: Text(
-                      "email_title",
+                      "name_title",
                       style: TextStyle(
                         fontSize: h3,
                         fontWeight: fontWeightBold,
@@ -96,8 +95,8 @@ class _LoginEmailState extends State<LoginEmail> {
                     child: Form(
                       key: formKey,
                       child: TextFormField(
-                        controller: this.emailText,
-                        focusNode: this.emailFocus,
+                        controller: this.nameText,
+                        focusNode: this.nameFocus,
                         decoration: InputDecoration(
                           errorStyle: TextStyle(height: 0),
                           focusedErrorBorder: OutlineInputBorder(
@@ -118,7 +117,7 @@ class _LoginEmailState extends State<LoginEmail> {
                     ),
                   ),
                   StreamBuilder(
-                    stream: emailValid.stream,
+                    stream: nameValid.stream,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
@@ -128,8 +127,8 @@ class _LoginEmailState extends State<LoginEmail> {
                         margin: EdgeInsets.only(top: 12, bottom: 12),
                         title: "continue_button",
                         onClick: () {
-                          this.emailFocus.unfocus();
-                          widget.context.repositories().authenticationRepository().setEmail(this.emailText.text);
+                          this.nameFocus.unfocus();
+                          widget.context.repositories().authenticationRepository().setName(this.nameText.text);
                           widget.parentPageRepository.nextPage();
                         },
                       );

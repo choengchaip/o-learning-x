@@ -32,7 +32,9 @@ class CoursePageState extends State<CoursePage> {
     this.courseExpand = false;
     this.transparentBg = 0;
 
-    widget.context.repositories().myCourseRepository().fetch();
+    widget.context.repositories().myCourseRepository().fetch().then((_){
+      print(widget.context.repositories().myCourseRepository().items[0].Title);
+    });
   }
 
   @override
@@ -40,7 +42,7 @@ class CoursePageState extends State<CoursePage> {
     return Container(
       child: LoadingStack(
         isLoadingSCs: [
-          widget.context.repositories().courseRepository().isLoadingSC,
+          widget.context.repositories().myCourseRepository().isLoadingSC,
         ],
         children: () => [
           AnimatedOpacity(

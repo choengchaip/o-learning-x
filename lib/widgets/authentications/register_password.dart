@@ -3,51 +3,52 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/features/main_feature.dart';
+import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
 import 'package:o_learning_x/widgets/commons/curve_button.dart';
 import 'package:o_learning_x/widgets/commons/header_back_button.dart';
 
-class LoginEmail extends StatefulWidget {
+class RegisterPassword extends StatefulWidget {
   final IContext context;
   final IConfig config;
   final PageRepository parentPageRepository;
 
-  LoginEmail({
+  RegisterPassword({
     required this.context,
     required this.config,
     required this.parentPageRepository,
   });
 
   @override
-  _LoginEmailState createState() {
-    return _LoginEmailState();
+  _RegisterPasswordState createState() {
+    return _RegisterPasswordState();
   }
 }
 
-class _LoginEmailState extends State<LoginEmail> {
+class _RegisterPasswordState extends State<RegisterPassword> {
   final formKey = GlobalKey<FormState>();
-  late StreamController<bool> emailValid;
-  late TextEditingController emailText;
-  late FocusNode emailFocus;
+  late StreamController<bool> passwordValid;
+  late TextEditingController passwordText;
+  late FocusNode passwordFocus;
 
   @override
   void initState() {
     super.initState();
 
-    this.emailValid = StreamController<bool>();
-    this.emailValid.add(false);
-    this.emailText = TextEditingController(text: "");
-    this.emailFocus = FocusNode();
-    // this.emailFocus.requestFocus();
+    this.passwordValid = StreamController<bool>();
+    this.passwordValid.add(false);
+    this.passwordText = TextEditingController(text: "");
+    this.passwordFocus = FocusNode();
 
     if (widget.context
         .repositories()
         .authenticationRepository()
-        .emailText
+        .passwordText
         .isNotEmpty) {
-      this.emailValid.add(true);
+      this.passwordValid.add(true);
     }
   }
 
@@ -55,7 +56,7 @@ class _LoginEmailState extends State<LoginEmail> {
   void dispose() {
     super.dispose();
 
-    this.emailValid.close();
+    this.passwordValid.close();
   }
 
   @override
@@ -72,10 +73,10 @@ class _LoginEmailState extends State<LoginEmail> {
           HeaderBackButton(
             backTitle: "back",
             onBack: () {
-              this.emailFocus.unfocus();
+              this.passwordFocus.unfocus();
               widget.parentPageRepository.prevPage();
             },
-            tailTitle: '1/2',
+            tailTitle: '3/3',
           ),
           Expanded(
             child: Container(
@@ -85,7 +86,7 @@ class _LoginEmailState extends State<LoginEmail> {
                   Container(
                     margin: EdgeInsets.only(bottom: 48),
                     child: Text(
-                      "email_title",
+                      "password_title",
                       style: TextStyle(
                         fontSize: h3,
                         fontWeight: fontWeightBold,
@@ -96,8 +97,9 @@ class _LoginEmailState extends State<LoginEmail> {
                     child: Form(
                       key: formKey,
                       child: TextFormField(
-                        controller: this.emailText,
-                        focusNode: this.emailFocus,
+                        controller: this.passwordText,
+                        obscureText: true,
+                        focusNode: this.passwordFocus,
                         decoration: InputDecoration(
                           errorStyle: TextStyle(height: 0),
                           focusedErrorBorder: OutlineInputBorder(
@@ -118,7 +120,7 @@ class _LoginEmailState extends State<LoginEmail> {
                     ),
                   ),
                   StreamBuilder(
-                    stream: emailValid.stream,
+                    stream: passwordValid.stream,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
@@ -127,10 +129,31 @@ class _LoginEmailState extends State<LoginEmail> {
                       return CurveButton(
                         margin: EdgeInsets.only(top: 12, bottom: 12),
                         title: "continue_button",
-                        onClick: () {
-                          this.emailFocus.unfocus();
-                          widget.context.repositories().authenticationRepository().setEmail(this.emailText.text);
-                          widget.parentPageRepository.nextPage();
+                        onClick: () async {
+                          this.passwordFocus.unfocus();
+                          widget.context
+                              .repositories()
+                              .authenticationRepository()
+                              .setPassword(this.passwordText.text);
+                          await widget.context
+                              .repositories()
+                              .authenticationRepository()
+                              .register();
+                          if (!widget.context
+                              .repositories()
+                              .authenticationRepository()
+                              .isError) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) {
+                                  return ScaffoldMiddleWare(
+                                      context: widget.context,
+                                      config: widget.config,
+                                      child: MainFeature(
+                                        context: widget.context,
+                                        config: widget.config,
+                                      ));
+                                }), (route) => false);
+                          }
                         },
                       );
                     },

@@ -9,24 +9,24 @@ import 'package:o_learning_x/styles/fonts.dart';
 import 'package:o_learning_x/widgets/commons/curve_button.dart';
 import 'package:o_learning_x/widgets/commons/header_back_button.dart';
 
-class LoginEmail extends StatefulWidget {
+class RegisterEmail extends StatefulWidget {
   final IContext context;
   final IConfig config;
   final PageRepository parentPageRepository;
 
-  LoginEmail({
+  RegisterEmail({
     required this.context,
     required this.config,
     required this.parentPageRepository,
   });
 
   @override
-  _LoginEmailState createState() {
-    return _LoginEmailState();
+  _RegisterEmailState createState() {
+    return _RegisterEmailState();
   }
 }
 
-class _LoginEmailState extends State<LoginEmail> {
+class _RegisterEmailState extends State<RegisterEmail> {
   final formKey = GlobalKey<FormState>();
   late StreamController<bool> emailValid;
   late TextEditingController emailText;
@@ -75,7 +75,7 @@ class _LoginEmailState extends State<LoginEmail> {
               this.emailFocus.unfocus();
               widget.parentPageRepository.prevPage();
             },
-            tailTitle: '1/2',
+            tailTitle: '2/3',
           ),
           Expanded(
             child: Container(

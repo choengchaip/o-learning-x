@@ -73,7 +73,7 @@ class SharedPreferences implements ISharedPreferences {
 
   @override
   Map<String, dynamic>? getAuthentication() {
-    String? str = this.getString("authentication");
+    String? str = this.getString("authorization");
     if (str == null) {
       return null;
     }
@@ -87,13 +87,14 @@ class SharedPreferences implements ISharedPreferences {
     Map<String, dynamic>? others,
   }) async {
     String str = json.encode({
-      ...(token != null ? {"token": token} : {}),
+      ...(this.getAuthentication() ?? Map<String,dynamic>.from({})),
+      ...(token != null ? {"authorization": token} : Map<String,dynamic>.from({})),
       ...(others ?? {}),
     });
-    return this.setString("authentication", str);
+    return this.setString("authorization", str);
   }
 
   Future<void> removeAuthentication() {
-    return this.remove("authentication");
+    return this.remove("authorization");
   }
 }

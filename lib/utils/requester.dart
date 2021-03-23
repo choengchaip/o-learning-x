@@ -42,7 +42,7 @@ class Requester {
       {Map<String, dynamic>? headers}) async {
     try {
       http.Response response = await http.post(Uri.parse(url),
-          body: payload, headers: _getRequesterHeader(headers));
+          body: json.encode(payload), headers: _getRequesterHeader(headers));
       if (_isResponseError(response)) {
         throw (json.decode(response.body));
       }
@@ -56,7 +56,7 @@ class Requester {
       {Map<String, dynamic>? headers}) async {
     try {
       http.Response response = await http.put(Uri.parse(url),
-          body: payload, headers: _getRequesterHeader(headers));
+          body: json.encode(payload), headers: _getRequesterHeader(headers));
       if (_isResponseError(response)) {
         throw (json.decode(response.body));
       }
@@ -70,7 +70,7 @@ class Requester {
       {Map<String, dynamic>? payload, Map<String, dynamic>? headers}) async {
     try {
       http.Response response = await http.delete(Uri.parse(url),
-          body: payload, headers: _getRequesterHeader(headers));
+          body: json.encode(payload), headers: _getRequesterHeader(headers));
       if (_isResponseError(response)) {
         throw (json.decode(response.body));
       }

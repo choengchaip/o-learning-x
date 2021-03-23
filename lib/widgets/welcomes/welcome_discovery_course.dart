@@ -46,8 +46,7 @@ class _WelcomeDiscoveryCourseState extends State<WelcomeDiscoveryCourse> {
     widget.context
         .repositories()
         .courseRepository()
-        .fetch(isMock: true)
-        .then((_) {
+        .fetch(params: {"category_id": "none"}).then((_) {
       if (widget.context.repositories().courseRepository().items.length >= 1) {
         this.selectedCourseId =
             widget.context.repositories().courseRepository().items[0].Id;
@@ -61,7 +60,7 @@ class _WelcomeDiscoveryCourseState extends State<WelcomeDiscoveryCourse> {
       padding: EdgeInsets.only(left: 16, right: 16),
       child: LoadingStack(
         isLoadingSCs: [
-          widget.context.repositories().discoveryRepository().isLoadingSC,
+          widget.context.repositories().courseRepository().isLoadingSC,
         ],
         children: () => [
           Column(
@@ -131,7 +130,7 @@ class _WelcomeDiscoveryCourseState extends State<WelcomeDiscoveryCourse> {
                                 .Id;
                             widget.context
                                 .repositories()
-                                .discoveryRepository()
+                                .courseRepository()
                                 .forceValueNotify();
                           },
                           child: CourseItem(
@@ -154,12 +153,12 @@ class _WelcomeDiscoveryCourseState extends State<WelcomeDiscoveryCourse> {
                                 .courseRepository()
                                 .items[index]
                                 .Description,
-                            isActive: widget.context
+                            isActive: this.selectedCourseId ==
+                                widget.context
                                     .repositories()
                                     .courseRepository()
                                     .items[index]
-                                    .Id ==
-                                this.selectedCourseId,
+                                    .Id,
                           ),
                         );
                       },
@@ -175,6 +174,10 @@ class _WelcomeDiscoveryCourseState extends State<WelcomeDiscoveryCourse> {
                       .repositories()
                       .discoveryRepository()
                       .addCourse(this.selectedCourseId);
+                  widget.context
+                      .repositories()
+                      .authenticationRepository()
+                      .setCourseId(this.selectedCourseId);
                   widget.parentPageRepository.nextPage();
                 },
               )
