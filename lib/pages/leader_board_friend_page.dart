@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
-import 'package:o_learning_x/widgets/accounts/account_home.dart';
-import 'package:o_learning_x/widgets/commons/loading_stack.dart';
 
-class AccountPage extends StatefulWidget {
+class LeaderBoardFriendPage extends StatefulWidget {
   final IContext context;
   final IConfig config;
 
   final PageRepository parentPageRepository;
 
-  AccountPage({
+  LeaderBoardFriendPage({
     required this.context,
     required this.config,
     required this.parentPageRepository,
@@ -19,22 +18,23 @@ class AccountPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return AccountPageState();
+    return _LeaderBoardFriend();
   }
 }
 
-class AccountPageState extends State<AccountPage> {
+class _LeaderBoardFriend extends State<LeaderBoardFriendPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: LoadingStack(
-        isLoadingSCs: [],
-        children: () => [
-          AccountHome(
-            context: widget.context,
-            config: widget.config,
-            rootPageRepository: widget.parentPageRepository,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: Text("No Available"),
           ),
+          // LeaderBoardFriendListFeature(
+          //   mockItems: mockLeaderBoardFriendItems,
+          // )
         ],
       ),
     );

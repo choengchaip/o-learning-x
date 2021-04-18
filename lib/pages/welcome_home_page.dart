@@ -60,12 +60,13 @@ class WelcomeHomePageState extends State<WelcomeHomePage> {
                       MaterialPageRoute(
                         builder: (context) {
                           return ScaffoldMiddleWare(
+                            context: widget.context,
+                            config: widget.config,
+                            child: LoginFeature(
                               context: widget.context,
                               config: widget.config,
-                              child: LoginFeature(
-                                context: widget.context,
-                                config: widget.config,
-                              ));
+                            ),
+                          );
                         },
                       ),
                     );

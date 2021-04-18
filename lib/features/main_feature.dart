@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/features/leader_board_feature.dart';
+import 'package:o_learning_x/pages/account_page.dart';
 import 'package:o_learning_x/pages/base_page.dart';
+import 'package:o_learning_x/pages/category_page.dart';
 import 'package:o_learning_x/pages/course_page.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
@@ -29,11 +32,11 @@ class MainFeatureState extends State<MainFeature> {
 
   @override
   void initState() {
-    super.initState();
-
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
     this.pageRepository.jumpTo(0);
+
+    super.initState();
   }
 
   @override
@@ -64,14 +67,19 @@ class MainFeatureState extends State<MainFeature> {
                         context: widget.context,
                         config: widget.config,
                       ),
-                      // CategoryPage(
-                      //   context: widget.context,
-                      //   config: widget.config,
-                      // ),
-                      // LeaderBoardPage(
-                      //   context: widget.context,
-                      //   config: widget.config,
-                      // ),
+                      CategoryPage(
+                        context: widget.context,
+                        config: widget.config,
+                      ),
+                      LeaderBoardFeature(
+                        context: widget.context,
+                        config: widget.config,
+                      ),
+                      AccountPage(
+                        context: widget.context,
+                        config: widget.config,
+                        parentPageRepository: this.pageRepository,
+                      )
                     ],
                   ),
                 ),

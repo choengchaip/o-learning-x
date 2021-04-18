@@ -10,3 +10,4 @@ const Color colorSecondaryLighter = Color(0xFFACBFDB);
 const Color colorGray = Color(0xFF808080);
 const Color colorGrayDark = Color(0xFF5E5E5E);
 const Color colorGrayLight = Color(0xFFC2C2C2);
+const Color colorGrayLighter = Color(0xFFE4E4E4);

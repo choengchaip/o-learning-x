@@ -114,6 +114,8 @@ abstract class IBaseDataRepository<T> {
 
   void setInnerData(dynamic data);
 
+  void setInnerItems(dynamic items);
+
   void initial();
 
   void dispose();

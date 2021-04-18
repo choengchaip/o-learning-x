@@ -49,9 +49,8 @@ class QuestionModel {
       Code: rawJson['code'] ?? "",
       Choices: ChoiceModel.fromListJson(rawJson['choice']),
       CorrectChoiceId: QuestionModel.getAnswerChoice(rawJson['choice']),
-      CorrectChoiceIds: rawJson['correct_answer_ids'] ?? "",
       AnswerWrongMessage: rawJson['answer_wrong_message'] ?? "",
-      Score: rawJson['score'] ?? "",
+      Score: rawJson['score'] ?? 0,
     );
   }
 
@@ -71,7 +70,7 @@ class QuestionModel {
   }
 
   static List<QuestionModel> fromListJson(
-      List<Map<String, dynamic>>? listRawJson) {
+      List<dynamic>? listRawJson) {
     if (listRawJson == null) {
       return <QuestionModel>[].toList();
     }

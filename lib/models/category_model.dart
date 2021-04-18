@@ -18,7 +18,7 @@ class CategoryModel {
     );
   }
 
-  static List<CategoryModel> toList(List<Map<String, dynamic>>? rawItems) {
+  static List<CategoryModel> toList(List<dynamic>? rawItems) {
     if (rawItems == null) {
       return [];
     }

@@ -13,15 +13,15 @@ class LeaderBoardUserModel {
     required this.Score,
   });
 
-  factory LeaderBoardUserModel.fromJson(Map<String, dynamic> rawJson) {
+  factory LeaderBoardUserModel.fromJson(Map<String, dynamic>? rawJson) {
     return LeaderBoardUserModel(
-        Id: rawJson['user_id'] ?? "",
-        Title: rawJson['user_name'] ?? 'No name',
-        ImageURL: rawJson['image'] ?? '',
-        Score: (rawJson['module_progress_current']?.toString() ?? ""));
+        Id: rawJson?['user_id'] ?? "",
+        Title: rawJson?['user_name'] ?? 'No name',
+        ImageURL: rawJson?['image'] ?? '',
+        Score: (rawJson?['module_progress_current']?.toString() ?? ""));
   }
 
-  static List<LeaderBoardUserModel> toList(List<Map<String, dynamic>>? rawItems) {
+  static List<LeaderBoardUserModel> toList(List<dynamic>? rawItems) {
     if (rawItems == null) {
       return [];
     }

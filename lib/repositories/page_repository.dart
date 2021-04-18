@@ -88,9 +88,9 @@ class PageRepository extends BasePageRepository {
 
   @override
   void dispose() {
-    super.dispose();
-
     this._pageIndexSC.close();
     this._pageSizeSC.close();
+
+    super.dispose();
   }
 }

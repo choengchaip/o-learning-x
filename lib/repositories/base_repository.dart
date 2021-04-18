@@ -223,12 +223,13 @@ class BaseDataRepository<T> implements IBaseDataRepository {
         data = {"data": mock};
       } else {
         Response response = await Requester.get(
-          this.options.getBaseUrl(),
+          "${this.options.getFindUrl() ?? this.options.getBaseUrl()}"
+              .replaceFirst(":id", id),
           params: params,
           headers: this.sharedPreferences.getAuthentication(),
         );
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+        data = {"data": js};
       }
 
       this._data = data["data"];
@@ -340,6 +341,11 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   @override
   void setInnerData(data) {
     return this._data = data;
+  }
+
+  @override
+  void setInnerItems(items) {
+    return this._items = items;
   }
 
   @override
@@ -572,6 +578,7 @@ class NewRepository implements IRepositories {
         sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${this.config.baseAPI()}/courses/my",
+          findUrl: "${this.config.baseAPI()}/courses/my/:id",
         ),
       );
     }

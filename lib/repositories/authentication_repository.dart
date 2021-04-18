@@ -90,7 +90,11 @@ class AuthenticationRepository extends BaseDataRepository {
       super.setInnerData(data["data"]);
       this.dataSC.add(this.data);
 
-      await this.sharedPreferences.setAuthentication(token: data["data"]);
+      await this
+          .sharedPreferences
+          .setAuthentication(token: data["data"], others: {
+        "email": this.emailText,
+      });
 
       this.toLoadedStatus();
     } catch (e) {
@@ -143,20 +147,14 @@ class AuthenticationRepository extends BaseDataRepository {
   Future<void> changePassword() async {
     try {
       this.toLoadingStatus();
-      late Map<String, dynamic> data;
 
-      Response response = await Requester.put(
+      await Requester.post(
           "${this.options.getBaseUrl()}/users/resetpassword",
           {
             "oldpassword": this.passwordText,
             "newpassword": this.newPasswordText,
           },
           headers: this.sharedPreferences.getAuthentication());
-      Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-      data = {"data": js};
-
-      super.setInnerData(data["data"]);
-      this.dataSC.add(this.data);
 
       this.toLoadedStatus();
     } catch (e) {

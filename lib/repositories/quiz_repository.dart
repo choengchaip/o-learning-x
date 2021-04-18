@@ -69,10 +69,12 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
   QuizModel get quizItem {
     List<QuestionModel> items = List<QuestionModel>.empty(growable: true);
 
-    (this.object["${this.currentQuestionId}_quiz_items"] as List)
-        .forEach((raw) {
-      items.add(QuestionModel.fromJson(ObjectHelper.toMap(raw)));
-    });
+    if (this.object["${this.currentQuestionId}_quiz_items"] != null) {
+      (this.object["${this.currentQuestionId}_quiz_items"] as List)
+          .forEach((raw) {
+        items.add(QuestionModel.fromJson(ObjectHelper.toMap(raw)));
+      });
+    }
 
     return QuizModel(
       TotalQuestion: items.length,
@@ -162,12 +164,19 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
         data = {"data": mock};
       } else {
         Response response = await Requester.get(
-            "${this.config.baseAPI()}/submodule/title/$quizId", params: params);
-        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
-        data = js;
+          "${this.config.baseAPI()}/submodule/title/$quizId",
+          params: params,
+          headers: this.sharedPreferences.getAuthentication(),
+        );
+        List<dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = {
+          "data": {"questions": js}
+        };
       }
 
       this.object["${quizKey}_quiz_items"] = data;
+      setInnerData(data["data"]);
+      this.dataSC.add(this.data);
 
       this.toLoadedStatus();
     } catch (e) {

@@ -48,9 +48,9 @@ class _WelcomeDiscoveryExperienceState
 
   @override
   void dispose() {
-    super.dispose();
-
     this.experienceValueSC.close();
+
+    super.dispose();
   }
 
   @override

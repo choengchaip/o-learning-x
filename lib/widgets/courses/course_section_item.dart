@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
 
 class CourseSectionItem extends StatefulWidget {
@@ -48,7 +49,7 @@ class CourseSectionItemState extends State<CourseSectionItem> {
             flushbarPosition: FlushbarPosition.TOP,
             title: 'This Skill is locked',
             message: 'Finish Level 1 of the previous Skill to unlock.',
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: colorPrimary,
             duration: Duration(seconds: 2),
           )..show(context);
         }
@@ -90,7 +91,7 @@ class CourseSectionItemState extends State<CourseSectionItem> {
                     widget.icon,
                     size: h3,
                     color: widget.canLearn
-                        ? Theme.of(context).primaryColor
+                        ? colorPrimary
                         : Colors.black26,
                   ),
                 ),

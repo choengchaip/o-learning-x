@@ -5,7 +5,6 @@ class Requester {
   static Map<String, String> _getRequesterHeader(
       Map<String, dynamic>? headers) {
     return {
-      "x-timestamp": "2021-03-10 12:22:12",
       ...(headers ?? {}),
     };
   }

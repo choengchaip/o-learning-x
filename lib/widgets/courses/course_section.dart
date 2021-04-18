@@ -5,13 +5,14 @@ import 'package:o_learning_x/cores/context.dart';
 import 'package:o_learning_x/models/module_model.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
+import 'package:o_learning_x/widgets/courses/course_section_item.dart';
 
 class CourseSection extends StatefulWidget {
   final IContext context;
   final IConfig config;
   final ModuleModel module;
   final Function(String id) onClick;
-  late final Widget? topWidget;
+  Widget? topWidget;
 
   CourseSection({
     required this.context,
@@ -20,7 +21,9 @@ class CourseSection extends StatefulWidget {
     required this.onClick,
     this.topWidget,
   }) {
-    this.topWidget = this.topWidget ?? Container();
+    if (this.topWidget == null) {
+      this.topWidget = Container();
+    }
   }
 
   @override
@@ -33,18 +36,17 @@ class CourseSectionState extends State<CourseSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        top: 32,
-        bottom: 32,
-      ),
-      color: colorGrayLight,
+      color: colorGrayLighter,
       child: Column(
         children: [
           Container(
+            margin: EdgeInsets.only(bottom: 32),
             child: Stack(
-              alignment: Alignment.center,
+              alignment: Alignment.bottomCenter,
               children: [
+                if (widget.topWidget != null) widget.topWidget!,
                 Container(
+                  margin: EdgeInsets.only(bottom: 14,),
                   height: 10,
                   color: Colors.white,
                 ),
@@ -74,10 +76,27 @@ class CourseSectionState extends State<CourseSection> {
             children: List.generate(
               widget.module.SubModules.length,
               (index) {
-                return Container();
+                return CourseSectionItem(
+                  context: widget.context,
+                  config: widget.config,
+                  id: widget.module.SubModules[index].Id,
+                  title: widget.module.SubModules[index].Title,
+                  icon: Icons.ac_unit,
+                  // icon: this.course.chapters[index].icon,
+                  canLearn: true,
+                  isPassed: true,
+                  progress: (widget.module.SubModules[index].Current) > (widget.module.SubModules[index].Current)
+                      ? (widget.module.SubModules[index].Max)
+                      : (widget.module.SubModules[index].Current),
+                  max: (widget.module.SubModules[index].Max),
+                  onClick: widget.onClick,
+                );
               },
             ),
           ),
+          Container(
+            height: 32,
+          )
         ],
       ),
     );

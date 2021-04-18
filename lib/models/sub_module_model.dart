@@ -28,7 +28,7 @@ class SubModuleModel {
     );
   }
 
-  static List<SubModuleModel> toList(List<Map<String, dynamic>>? rawItems) {
+  static List<SubModuleModel> toList(List<dynamic>? rawItems) {
     if (rawItems == null) {
       return [];
     }

@@ -10,14 +10,15 @@ class QuizModel {
     required this.Questions,
   });
 
-  factory QuizModel.fromJson(Map<String, dynamic> rawJson) {
+  factory QuizModel.fromJson(Map<String, dynamic>? rawJson) {
+    // print(QuestionModel.fromListJson(rawJson?["questions"]));
     return QuizModel(
-      TotalQuestion: 1,
-      Questions: QuestionModel.fromListJson(rawJson['questions']),
+      TotalQuestion: QuestionModel.fromListJson(rawJson?["questions"]).length,
+      Questions: QuestionModel.fromListJson(rawJson?["questions"]),
     );
   }
 
-  static List<QuizModel> toList(List<Map<String, dynamic>>? rawItems) {
+  static List<QuizModel> toList(List<dynamic>? rawItems) {
     if (rawItems == null) {
       return [];
     }

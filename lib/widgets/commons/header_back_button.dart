@@ -53,7 +53,7 @@ class HeaderBackButton extends StatelessWidget {
             child: Text(
               this.tailTitle,
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: colorPrimary,
                 fontSize: p,
                 fontWeight: FontWeight.bold,
               ),

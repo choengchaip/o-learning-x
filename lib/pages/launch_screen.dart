@@ -45,8 +45,8 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
 
-      // this.myContext.repositories().authenticationRepository().logout();
-      Map<String, dynamic>? user = this.myContext.sharedPreferences().getAuthentication();
+      Map<String, dynamic>? user =
+          this.myContext.sharedPreferences().getAuthentication();
 
       if (user == null) {
         Navigator.of(context).push(
@@ -62,6 +62,40 @@ class LaunchScreenState extends State<LaunchScreen> {
           ),
         );
       } else {
+        this
+            .myContext
+            .repositories()
+            .authenticationRepository()
+            .setEmail(user["email"] ?? "");
+        this
+            .myContext
+            .repositories()
+            .authenticationRepository()
+            .setAccessToken(user["authorization"] ?? "");
+
+        await this
+            .myContext
+            .repositories()
+            .authenticationRepository()
+            .fetchMe();
+        await this.myContext.repositories().myCourseRepository().fetch();
+
+        if (this.myContext.repositories().myCourseRepository().items.length >
+            0) {
+          this.myContext.repositories().authenticationRepository().setCourseId(
+              this.myContext.repositories().myCourseRepository().items[0].Id);
+          this
+              .myContext
+              .repositories()
+              .authenticationRepository()
+              .setCourseName(this
+                  .myContext
+                  .repositories()
+                  .myCourseRepository()
+                  .items[0]
+                  .Title);
+        }
+
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ScaffoldMiddleWare(
@@ -84,9 +118,9 @@ class LaunchScreenState extends State<LaunchScreen> {
 
   @override
   void dispose() {
-    super.dispose();
-
     widget.launchScreenRepository.dispose();
+
+    super.dispose();
   }
 
   @override

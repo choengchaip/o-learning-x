@@ -18,18 +18,18 @@ class ModuleModel {
     required this.SubModules,
   });
 
-  factory ModuleModel.fromJson(Map<String, dynamic> rawJson) {
+  factory ModuleModel.fromJson(Map<String, dynamic>? rawJson) {
     return ModuleModel(
-      Id: rawJson["module_id"],
-      Title: rawJson["module_name"],
-      Description: rawJson["module_description"],
-      Image: rawJson["module_image"],
-      CourseId: rawJson["course_id"],
-      SubModules: SubModuleModel.toList(rawJson["submodules"]),
+      Id: rawJson?["module_id"] ?? "",
+      Title: rawJson?["module_name"] ?? "",
+      Description: rawJson?["module_description"] ?? "",
+      Image: rawJson?["module_image"] ?? "",
+      CourseId: rawJson?["course_id"] ?? "",
+      SubModules: SubModuleModel.toList(rawJson?["submodules"]),
     );
   }
 
-  static List<ModuleModel> toList(List<Map<String, dynamic>>? rawItems) {
+  static List<ModuleModel> toList(List<dynamic>? rawItems) {
     if (rawItems == null) {
       return [];
     }
