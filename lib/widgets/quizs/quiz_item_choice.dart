@@ -27,6 +27,7 @@ class QuizItemChoice extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: [
         CachedImage(
+          height: 200,
           image: this.questionItem.ImageURL,
         ),
         Container(
@@ -39,7 +40,7 @@ class QuizItemChoice extends StatelessWidget {
             ),
           ),
         ),
-        if (this.questionItem.Code != null)
+        if (this.questionItem.Code != null && this.questionItem.Code != "")
           Container(
             color: colorSecondary,
             padding: EdgeInsets.all(16),
@@ -75,6 +76,7 @@ class QuizItemChoice extends StatelessWidget {
                                 .quizRepository()
                                 .currentChoiceId =
                             this.questionItem.Choices![index].ChoiceId;
+                        this.context.repositories().quizRepository().forceValueNotify();
                       }
                     },
                     child: Card(

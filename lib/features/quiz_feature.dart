@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/features/score_summary_feature.dart';
+import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
 import 'package:o_learning_x/pages/base_page.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/widgets/commons/loading_stack.dart';
@@ -31,6 +33,7 @@ class _QuizFeature extends State<QuizFeature> {
   late StreamController<bool> positionController;
   late StreamController<double> progressController;
   late bool isHasRun;
+  late int questionIndex;
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _QuizFeature extends State<QuizFeature> {
     this.positionController.add(false);
     this.progressController.add(0);
     this.isHasRun = false;
+    this.questionIndex = 0;
 
     super.initState();
   }
@@ -110,6 +114,8 @@ class _QuizFeature extends State<QuizFeature> {
                                   .quizRepository()
                                   .disposeChoices();
                             });
+
+                            Navigator.of(context).pop();
                           },
                         ),
                         StreamBuilder<double>(
@@ -148,14 +154,31 @@ class _QuizFeature extends State<QuizFeature> {
                                         .length ??
                                     0,
                                 (index) {
+                                  if (this.questionIndex == index) {
+                                    widget.context
+                                            .repositories()
+                                            .quizRepository()
+                                            .currentQuestionId =
+                                        widget.context
+                                            .repositories()
+                                            .quizRepository()
+                                            .data!
+                                            .Questions[index]
+                                            .Id;
+                                    widget.context
+                                        .repositories()
+                                        .quizRepository()
+                                        .forceValueNotify();
+                                  }
+
                                   return QuizItem(
                                     context: widget.context,
                                     config: widget.config,
                                     questionItem: widget.context
                                         .repositories()
                                         .quizRepository()
-                                        .data
-                                        !.Questions[index],
+                                        .data!
+                                        .Questions[index],
                                   );
                                 },
                               ),
@@ -176,10 +199,19 @@ class _QuizFeature extends State<QuizFeature> {
                                 .repositories()
                                 .quizRepository()
                                 .submitAnswer();
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (_) => ScoreSummaryPage(
-                            //           quizRepository: quizRepository,
-                            //         )));
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ScaffoldMiddleWare(
+                                  context: widget.context,
+                                  config: widget.config,
+                                  child: ScoreSummaryFeature(
+                                    context: widget.context,
+                                    config: widget.config,
+                                  ),
+                                ),
+                              ),
+                            );
+
                             this.positionController.add(false);
                             widget.context
                                 .repositories()
@@ -199,6 +231,7 @@ class _QuizFeature extends State<QuizFeature> {
                                 .repositories()
                                 .quizRepository()
                                 .answerQuestion();
+
                             if (!widget.context
                                 .repositories()
                                 .quizRepository()
@@ -226,7 +259,13 @@ class _QuizFeature extends State<QuizFeature> {
                                           .toStringAsFixed(8))
                                   .toDouble());
                               this.pageRepository.nextPage();
+                              this.questionIndex++;
                             }
+
+                            widget.context
+                                .repositories()
+                                .quizRepository()
+                                .forceValueNotify();
                           },
                         ),
                       ],

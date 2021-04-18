@@ -57,8 +57,8 @@ class _QuizItemState extends State<QuizItem> {
 
   @override
   void initState() {
-    widget.context.repositories().quizRepository().currentQuestionId =
-        widget.questionItem.Id;
+    widget.context.repositories().quizRepository().currentQuestionId = widget.questionItem.Id;
+    widget.context.repositories().quizRepository().forceValueNotify();
 
     super.initState();
   }

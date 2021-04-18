@@ -30,7 +30,6 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
   late List<Map<String, dynamic>> answers;
   late List<Map<String, dynamic>> answerIds;
   late List<Map<String, dynamic>> choiceIds;
-  late Map<String, dynamic> object;
 
   QuizRepository({
     required this.buildCtx,
@@ -49,7 +48,6 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
     this.answers = List<Map<String, dynamic>>.empty(growable: true);
     this.answerIds = List<Map<String, dynamic>>.empty(growable: true);
     this.choiceIds = List<Map<String, dynamic>>.empty(growable: true);
-    this.object = {};
   }
 
   QuestionModel? get currentQuestion =>
@@ -58,28 +56,12 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
   QuestionModel? findQuestionById(String questionId) {
     try {
       return this
-          .quizItem
-          .Questions
+          .data
+          ?.Questions
           .singleWhere((question) => question.Id == questionId, orElse: null);
     } catch (e) {
       return null;
     }
-  }
-
-  QuizModel get quizItem {
-    List<QuestionModel> items = List<QuestionModel>.empty(growable: true);
-
-    if (this.object["${this.currentQuestionId}_quiz_items"] != null) {
-      (this.object["${this.currentQuestionId}_quiz_items"] as List)
-          .forEach((raw) {
-        items.add(QuestionModel.fromJson(ObjectHelper.toMap(raw)));
-      });
-    }
-
-    return QuizModel(
-      TotalQuestion: items.length,
-      Questions: items,
-    );
   }
 
   initialChoices() {
@@ -118,9 +100,8 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
       return true;
     } else if (this.currentQuestion?.type == ChoiceType.ESSAY) {
       return this.answerIds.where((answer) => answer['value'] == '').isEmpty;
-    } else if (this.currentQuestion?.type != ChoiceType.READING) {
-      return this.currentChoiceId != '' ||
-          this.currentQuestion?.type == ChoiceType.READING;
+    } else if (this.currentQuestion?.type == ChoiceType.CHOICE) {
+      return this.currentChoiceId != '';
     } else {
       return true;
     }
@@ -174,7 +155,6 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
         };
       }
 
-      this.object["${quizKey}_quiz_items"] = data;
       setInnerData(data["data"]);
       this.dataSC.add(this.data);
 
@@ -244,6 +224,7 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
   void tryAgain() {
     this.answers.removeLast();
     this.answerWrongAlert = false;
+    this.forceValueNotify();
   }
 
   void resetChoice() {
@@ -291,7 +272,7 @@ class QuizRepository extends BaseDataRepository<QuizModel> {
           "start_time": dateFormat,
           "finish_time": dateFormat,
           "star": 1,
-        });
+        }, headers: this.sharedPreferences.getAuthentication());
         this.receivePoint++;
       } catch (e) {
         print('get category detail error $e');

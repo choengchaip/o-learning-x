@@ -35,6 +35,7 @@ dependencies:
   another_flushbar: ^1.10.17
   intl: ^0.17.0
   flutter_date_pickers: ^0.2.2
+  syncfusion_flutter_gauges: ^19.1.56
 
 dev_dependencies:
   flutter_test:

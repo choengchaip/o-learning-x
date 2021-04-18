@@ -11,10 +11,10 @@ class ChoiceModel {
     required this.ChoiceText,
   });
 
-  factory ChoiceModel.fromJson(Map<String, dynamic> rawJson) {
+  factory ChoiceModel.fromJson(Map<String, dynamic>? rawJson) {
     return ChoiceModel(
-      ChoiceId: rawJson["choice_id"] ?? "",
-      ChoiceText: rawJson["choice_text"] ?? "",
+      ChoiceId: rawJson?["choice_id"] ?? "",
+      ChoiceText: rawJson?["choice_text"] ?? "",
     );
   }
 

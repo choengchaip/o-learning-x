@@ -38,6 +38,7 @@ class _QuizItemEssayState extends State<QuizItemEssay> {
       padding: EdgeInsets.zero,
       children: [
         CachedImage(
+          height: 200,
           image: widget.questionItem.ImageURL,
         ),
         Container(

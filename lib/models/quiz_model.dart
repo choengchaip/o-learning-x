@@ -11,7 +11,6 @@ class QuizModel {
   });
 
   factory QuizModel.fromJson(Map<String, dynamic>? rawJson) {
-    // print(QuestionModel.fromListJson(rawJson?["questions"]));
     return QuizModel(
       TotalQuestion: QuestionModel.fromListJson(rawJson?["questions"]).length,
       Questions: QuestionModel.fromListJson(rawJson?["questions"]),

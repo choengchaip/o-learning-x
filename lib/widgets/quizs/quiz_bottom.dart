@@ -54,49 +54,49 @@ class QuizBottom extends StatelessWidget {
               ),
             ),
           ),
-          AnimatedContainer(
-            duration: Duration(
-              milliseconds: 250,
-            ),
-            padding: EdgeInsets.only(
-              left: 16,
-              right: 16,
-            ),
-            height: this.context.repositories().quizRepository().choiceIds.isEmpty
-                ? 0 : 55,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                  (this.context.repositories().quizRepository().choiceIds.isEmpty
-                      ? 0
-                      : this.context.repositories().quizRepository().choiceIds.length), (index) {
-                return Container(
-                  margin: EdgeInsets.only(right: 8),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (!this.context.repositories().quizRepository().isAnswerAdded(
-                          this.context.repositories().quizRepository().choiceIds[index]['value'])) {
-                        this.context.repositories().quizRepository().answerEssayQuestion(
-                            this.context.repositories().quizRepository().choiceIds[index]);
-                      }
-                    },
-                    child: Card(
-                      color: this.context.repositories().quizRepository().choiceIds.isEmpty
-                          ? Colors.white
-                          : this.context.repositories().quizRepository().isAnswerAdded(
-                          this.context.repositories().quizRepository().choiceIds[index]['value'])
-                          ? colorGrayLighter
-                          : Colors.white,
-                      child: Container(
-                        padding: EdgeInsets.all(4),
-                        child: Text(this.context.repositories().quizRepository().choiceIds[index]['label']),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
-          ),
+          // AnimatedContainer(
+          //   duration: Duration(
+          //     milliseconds: 250,
+          //   ),
+          //   padding: EdgeInsets.only(
+          //     left: 16,
+          //     right: 16,
+          //   ),
+          //   height: this.context.repositories().quizRepository().choiceIds.isEmpty
+          //       ? 0 : 55,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: List.generate(
+          //         (this.context.repositories().quizRepository().choiceIds.isEmpty
+          //             ? 0
+          //             : this.context.repositories().quizRepository().choiceIds.length), (index) {
+          //       return Container(
+          //         margin: EdgeInsets.only(right: 8),
+          //         child: GestureDetector(
+          //           onTap: () {
+          //             // if (!this.context.repositories().quizRepository().isAnswerAdded(
+          //             //     this.context.repositories().quizRepository().choiceIds[index]['value'])) {
+          //             //   this.context.repositories().quizRepository().answerEssayQuestion(
+          //             //       this.context.repositories().quizRepository().choiceIds[index]);
+          //             // }
+          //           },
+          //           child: Card(
+          //             color: this.context.repositories().quizRepository().choiceIds.isEmpty
+          //                 ? Colors.white
+          //                 : this.context.repositories().quizRepository().isAnswerAdded(
+          //                 this.context.repositories().quizRepository().choiceIds[index]['value'])
+          //                 ? colorGrayLighter
+          //                 : Colors.white,
+          //             child: Container(
+          //               padding: EdgeInsets.all(4),
+          //               child: Text(this.context.repositories().quizRepository().choiceIds[index]['label']),
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     }),
+          //   ),
+          // ),
           Container(
             padding: EdgeInsets.only(
               top: 12,
@@ -193,7 +193,7 @@ class QuizBottom extends StatelessWidget {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      if(!this.context.repositories ().quizRepository().answerWrongAlert) GestureDetector(
                         onTap: () async {
                           if (this.parentPageRepository.currentPage ==
                               this.parentPageRepository.pageSize -

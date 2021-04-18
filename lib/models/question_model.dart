@@ -38,19 +38,19 @@ class QuestionModel {
     this.Score,
   });
 
-  factory QuestionModel.fromJson(Map<String, dynamic> rawJson) {
+  factory QuestionModel.fromJson(Map<String, dynamic>? rawJson) {
     return QuestionModel(
-      Id: rawJson['title_id'] ?? "",
-      Title: rawJson['title_name'] ?? "",
-      ImageURL: rawJson['image_url'] ?? "",
-      TypeString: rawJson['title_type'] ?? "",
-      Question: rawJson['title_description'] ?? "",
-      Note: rawJson['note'] ?? "",
-      Code: rawJson['code'] ?? "",
-      Choices: ChoiceModel.fromListJson(rawJson['choice']),
-      CorrectChoiceId: QuestionModel.getAnswerChoice(rawJson['choice']),
-      AnswerWrongMessage: rawJson['answer_wrong_message'] ?? "",
-      Score: rawJson['score'] ?? 0,
+      Id: rawJson?['title_id'] ?? "",
+      Title: rawJson?['title_name'] ?? "",
+      ImageURL: rawJson?['image_url'] ?? "",
+      TypeString: rawJson?['title_type'] ?? "",
+      Question: rawJson?['title_description'] ?? "",
+      Note: rawJson?['note'] ?? "",
+      Code: rawJson?['code'] ?? "",
+      Choices: ChoiceModel.fromListJson(rawJson?['choice']),
+      CorrectChoiceId: '0',
+      AnswerWrongMessage: rawJson?['answer_wrong_message'] ?? "",
+      Score: rawJson?['score'] ?? 0,
     );
   }
 
