@@ -73,7 +73,7 @@ class WelcomeHomePageState extends State<WelcomeHomePage> {
                   },
                   child: Container(
                     child: Text(
-                      "login_button",
+                      widget.context.localeRepository().getString("login_button"),
                       style: TextStyle(
                         color: colorGray,
                         fontSize: p,
@@ -94,22 +94,22 @@ class WelcomeHomePageState extends State<WelcomeHomePage> {
                     context: widget.context,
                     config: widget.config,
                     logoImage: 'lib/statics/logo.png',
-                    title: "learn_to_code_title",
-                    description: "learn_to_code_description",
+                    title: widget.context.localeRepository().getString("learn_to_code_title"),
+                    description: widget.context.localeRepository().getString("learn_to_code_description"),
                   ),
                   WelcomeInformation(
                     context: widget.context,
                     config: widget.config,
                     logoImage: 'lib/statics/logo.png',
-                    title: "build_project_title",
-                    description: "build_project_description",
+                    title: widget.context.localeRepository().getString("build_project_title"),
+                    description: widget.context.localeRepository().getString("build_project_description"),
                   ),
                   WelcomeInformation(
                     context: widget.context,
                     config: widget.config,
                     logoImage: 'lib/statics/logo.png',
-                    title: "learn_to_code_title",
-                    description: "learn_to_code_description",
+                    title: widget.context.localeRepository().getString("learn_to_code_title"),
+                    description: widget.context.localeRepository().getString("learn_to_code_description"),
                   ),
                 ],
               ),
@@ -127,7 +127,7 @@ class WelcomeHomePageState extends State<WelcomeHomePage> {
                 this.pageRepository.nextPage();
               }
             },
-            title: "get_started_button",
+            title: widget.context.localeRepository().getString("get_started_button"),
           ),
         ],
       ),

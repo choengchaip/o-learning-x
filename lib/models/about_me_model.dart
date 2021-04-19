@@ -33,22 +33,22 @@ class AboutMeModel {
     this.Progress,
   });
 
-  factory AboutMeModel.fromJson(Map<String, dynamic> rawJson) {
+  factory AboutMeModel.fromJson(Map<String, dynamic>? rawJson) {
     return AboutMeModel(
-      Id: rawJson['id'],
-      Name: rawJson['name'],
-      Email: rawJson['email'],
-      Password: rawJson['password'],
-      Role: rawJson['role'],
-      Phone: rawJson['phone'],
-      RememberToken: rawJson['remember_token'],
-      Birthday: rawJson['birthday'],
-      Gender: rawJson['gender'],
-      BloodGroup: rawJson['blood_group'],
-      SchoolId: rawJson['school_id'],
-      AuthenticationKey: rawJson['authentication_key'],
-      Star: rawJson['star'],
-      Progress: rawJson['progress'],
+      Id: rawJson?['id'] ?? "",
+      Name: rawJson?['name'] ?? "",
+      Email: rawJson?['email'] ?? "",
+      Password: rawJson?['password'] ?? "",
+      Role: rawJson?['role'] ?? "",
+      Phone: rawJson?['phone'] ?? "",
+      RememberToken: rawJson?['remember_token'] ?? "",
+      Birthday: rawJson?['birthday'] ?? "",
+      Gender: rawJson?['gender'] ?? "",
+      BloodGroup: rawJson?['blood_group'] ?? "",
+      SchoolId: rawJson?['school_id'] ?? "",
+      AuthenticationKey: rawJson?['authentication_key'] ?? "",
+      Star: rawJson?['star'] ?? 0,
+      Progress: rawJson?['progress'] ?? 0,
     );
   }
 

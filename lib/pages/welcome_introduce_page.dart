@@ -48,7 +48,7 @@ class _WelcomeIntroducePageState extends State<WelcomeIntroducePage> {
           Container(
             padding: EdgeInsets.only(top: 24, bottom: 8),
             child: Text(
-              "header",
+              widget.context.localeRepository().getString("discovery_intro_header"),
               style: TextStyle(
                 color: colorPrimary,
                 fontSize: p,
@@ -59,7 +59,7 @@ class _WelcomeIntroducePageState extends State<WelcomeIntroducePage> {
           Container(
             padding: EdgeInsets.all(8),
             child: Text(
-              "title",
+              widget.context.localeRepository().getString("discovery_intro_title"),
               style: TextStyle(
                 color: colorSecondaryDark,
                 fontSize: h3,
@@ -70,7 +70,7 @@ class _WelcomeIntroducePageState extends State<WelcomeIntroducePage> {
           Container(
             padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
             child: Text(
-              "description",
+              widget.context.localeRepository().getString("discovery_intro_description"),
               style: TextStyle(
                 color: colorGray,
                 fontSize: p,
@@ -90,7 +90,7 @@ class _WelcomeIntroducePageState extends State<WelcomeIntroducePage> {
             ),
           ),
           CurveButton(
-            title: "let_go_button",
+            title: widget.context.localeRepository().getString("discovery_intro_let_go_button"),
             onClick: () {
               widget.parentPageRepository.nextPage();
             },

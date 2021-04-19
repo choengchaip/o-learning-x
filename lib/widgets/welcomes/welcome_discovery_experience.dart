@@ -63,7 +63,7 @@ class _WelcomeDiscoveryExperienceState
           Container(
             padding: EdgeInsets.only(top: 24, bottom: 8),
             child: Text(
-              "header",
+              widget.context.localeRepository().getString("discovery_list_header"),
               style: TextStyle(
                 color: colorPrimary,
                 fontSize: p,
@@ -74,7 +74,7 @@ class _WelcomeDiscoveryExperienceState
           Container(
             padding: EdgeInsets.only(top: 8, bottom: 32, left: 8, right: 8),
             child: Text(
-              "title",
+              widget.context.localeRepository().getString("discovery_list_title"),
               style: TextStyle(
                 color: colorSecondaryDark,
                 fontSize: h3,
@@ -152,7 +152,7 @@ class _WelcomeDiscoveryExperienceState
                             duration: Duration(milliseconds: 250),
                             child: Container(
                               child: Text(
-                                "experience_none",
+                                widget.context.localeRepository().getString("discovery_list_experience_none"),
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: h4,
@@ -170,7 +170,7 @@ class _WelcomeDiscoveryExperienceState
                             duration: Duration(milliseconds: 250),
                             child: Container(
                               child: Text(
-                                "experience_little",
+                                widget.context.localeRepository().getString("discovery_list_experience_little"),
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: h4,
@@ -186,7 +186,7 @@ class _WelcomeDiscoveryExperienceState
                             duration: Duration(milliseconds: 250),
                             child: Container(
                               child: Text(
-                                "experience_a_lot",
+                                widget.context.localeRepository().getString("discovery_list_experience_a_lot"),
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: h4,
@@ -237,7 +237,7 @@ class _WelcomeDiscoveryExperienceState
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
-                                    "experience_a_lot_description",
+                                    widget.context.localeRepository().getString("discovery_list_experience_a_lot_description"),
                                     style: TextStyle(
                                       fontSize: p,
                                       color: colorGray,
@@ -255,7 +255,7 @@ class _WelcomeDiscoveryExperienceState
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
-                                    "experience_little_description",
+                                    widget.context.localeRepository().getString("discovery_list_experience_little_description"),
                                     style: TextStyle(
                                       fontSize: p,
                                       color: colorGray,
@@ -273,7 +273,7 @@ class _WelcomeDiscoveryExperienceState
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
-                                    "experience_none_description",
+                                    widget.context.localeRepository().getString("discovery_list_experience_none_description"),
                                     style: TextStyle(
                                       fontSize: p,
                                       color: colorGray,
@@ -292,7 +292,7 @@ class _WelcomeDiscoveryExperienceState
             },
           ),
           CurveButton(
-            title: "continue_button",
+            title: widget.context.localeRepository().getString("discovery_list_continue_button"),
             onClick: () {
               widget.context
                   .repositories()

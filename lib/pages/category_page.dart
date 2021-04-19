@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/middlewares/scaffold_middle_ware.dart';
+import 'package:o_learning_x/pages/subject_detail_page.dart';
+import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/widgets/categories/category_continue_learning.dart';
 import 'package:o_learning_x/widgets/categories/category_recommend.dart';
@@ -10,10 +14,12 @@ import 'package:o_learning_x/widgets/commons/loading_stack.dart';
 class CategoryPage extends StatefulWidget {
   final IContext context;
   final IConfig config;
+  final PageRepository parentPageRepository;
 
   CategoryPage({
     required this.context,
     required this.config,
+    required this.parentPageRepository,
   });
 
   @override
@@ -23,7 +29,6 @@ class CategoryPage extends StatefulWidget {
 }
 
 class CategoryPageState extends State<CategoryPage> {
-
   @override
   void initState() {
     super.initState();
@@ -59,29 +64,65 @@ class CategoryPageState extends State<CategoryPage> {
                   context: widget.context,
                   config: widget.config,
                   title: "continue_learning",
-                  items: widget.context.repositories().myCourseRepository().items,
+                  items:
+                      widget.context.repositories().myCourseRepository().items,
                   onClick: (String id) async {
-                    // await subjectRepository.getCourseDetail(id);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (_) => SubjectDetailPage()));
+                    await widget.context
+                        .repositories()
+                        .myCourseRepository()
+                        .get(id);
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ScaffoldMiddleWare(
+                          context: widget.context,
+                          config: widget.config,
+                          child: SubjectDetailPage(
+                            context: widget.context,
+                            config: widget.config,
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
                 CategoryRecommend(
                   title: "recommend_course",
                   items: widget.context.repositories().courseRepository().items,
                   onClick: (String id) async {
-                    // await subjectRepository.getCourseDetail(id);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (_) => SubjectDetailPage()));
+                    await widget.context
+                        .repositories()
+                        .myCourseRepository()
+                        .get(id);
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ScaffoldMiddleWare(
+                          context: widget.context,
+                          config: widget.config,
+                          child: SubjectDetailPage(
+                            context: widget.context,
+                            config: widget.config,
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
                 CategorySearch(
                   title: "browse_categories",
-                  items: widget.context.repositories().categoryRepository().items,
+                  items:
+                      widget.context.repositories().categoryRepository().items,
                   onClick: (String id, String name) async {
-                    // await subjectRepository.setCategoryName(name);
-                    // await subjectRepository.getCategoryDetail(id);
-                    // this.widgetSliderRepository.nextWidget();
+                    await widget.context
+                        .repositories()
+                        .subjectRepository()
+                        .setCategoryName(name);
+                    await widget.context
+                        .repositories()
+                        .categoryRepository()
+                        .fetch(params: {
+                      "category_id": "none",
+                    });
+                    widget.parentPageRepository.nextPage();
                   },
                 )
               ],

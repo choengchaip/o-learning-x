@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/configs/config.dart';
 import 'package:o_learning_x/cores/context.dart';
+import 'package:o_learning_x/features/category_feature.dart';
 import 'package:o_learning_x/features/leader_board_feature.dart';
 import 'package:o_learning_x/pages/account_page.dart';
 import 'package:o_learning_x/pages/base_page.dart';
@@ -67,7 +68,7 @@ class MainFeatureState extends State<MainFeature> {
                         context: widget.context,
                         config: widget.config,
                       ),
-                      CategoryPage(
+                      CategoryFeature(
                         context: widget.context,
                         config: widget.config,
                       ),

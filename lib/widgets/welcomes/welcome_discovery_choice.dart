@@ -51,7 +51,7 @@ class _WelcomeDiscoveryChoiceState extends State<WelcomeDiscoveryChoice> {
               Container(
                 padding: EdgeInsets.only(top: 24, bottom: 8),
                 child: Text(
-                  "header",
+                  widget.context.localeRepository().getString("discovery_list_header"),
                   style: TextStyle(
                     color: colorPrimary,
                     fontSize: p,
@@ -62,7 +62,7 @@ class _WelcomeDiscoveryChoiceState extends State<WelcomeDiscoveryChoice> {
               Container(
                 padding: EdgeInsets.only(top: 8, bottom: 32, left: 8, right: 8),
                 child: Text(
-                  "title",
+                  widget.context.localeRepository().getString("discovery_list_title"),
                   style: TextStyle(
                     color: colorSecondaryDark,
                     fontSize: h3,
