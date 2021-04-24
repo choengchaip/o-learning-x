@@ -52,6 +52,8 @@ class LeaderBoardFeatureState extends State<LeaderBoardFeature> {
             child: Column(
               children: [
                 LeaderBoardNavBar(
+                  context: widget.context,
+                  config: widget.config,
                   parentPageRepository: this.pageRepository,
                 ),
                 Expanded(

@@ -81,7 +81,7 @@ class _ChangePasswordConfirmPasswordState
                   Container(
                     margin: EdgeInsets.only(bottom: 48),
                     child: Text(
-                      "confirm_password_title",
+                      widget.context.localeRepository().getString("change_password_confirm_password_title"),
                       style: TextStyle(
                         fontSize: h3,
                         fontWeight: fontWeightBold,
@@ -132,7 +132,7 @@ class _ChangePasswordConfirmPasswordState
 
                       return CurveButton(
                         margin: EdgeInsets.only(top: 12, bottom: 12),
-                        title: "change_password_button",
+                        title: widget.context.localeRepository().getString("change_password_change_password_button"),
                         onClick: () async {
                           this.passwordFocus.unfocus();
                           await widget.context

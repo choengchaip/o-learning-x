@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:o_learning_x/repositories/locale_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
 
 class LeaderBoardLeagueAchievement extends StatelessWidget {
+  final LocaleRepository localeRepository;
+
+  LeaderBoardLeagueAchievement({
+    required this.localeRepository,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +47,7 @@ class LeaderBoardLeagueAchievement extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
-              "wooden_league",
+              this.localeRepository.getString("wooden_league"),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: p,

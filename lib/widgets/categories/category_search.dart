@@ -2,17 +2,20 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:o_learning_x/models/category_model.dart';
+import 'package:o_learning_x/repositories/locale_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 import 'package:o_learning_x/styles/fonts.dart';
 
 class CategorySearch extends StatelessWidget {
   final String title;
   final List<CategoryModel> items;
+  final LocaleRepository localeRepository;
   final Function(String id, String name)? onClick;
 
   CategorySearch({
     required this.title,
     required this.items,
+    required this.localeRepository,
     this.onClick,
   });
 
@@ -53,7 +56,7 @@ class CategorySearch extends StatelessWidget {
                         },
                         child: Container(
                           child: Text(
-                            "search",
+                            this.localeRepository.getString("search"),
                             style: TextStyle(
                               color: colorPrimary,
                               fontSize: p,

@@ -1,14 +1,20 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:o_learning_x/configs/config.dart';
+import 'package:o_learning_x/cores/context.dart';
 import 'package:o_learning_x/repositories/page_repository.dart';
 import 'package:o_learning_x/styles/colors.dart';
 
 class LeaderBoardNavBar extends StatelessWidget {
+  final IContext context;
+  final IConfig config;
   final PageRepository parentPageRepository;
   StreamController<int> navBar = StreamController<int>();
 
   LeaderBoardNavBar({
+    required this.context,
+    required this.config,
     required this.parentPageRepository,
   });
 
@@ -44,7 +50,7 @@ class LeaderBoardNavBar extends StatelessWidget {
                             bottom: 16,
                           ),
                           child: Text(
-                            "leagues",
+                            this.context.localeRepository().getString("leagues"),
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -66,7 +72,7 @@ class LeaderBoardNavBar extends StatelessWidget {
                           ),
                           color: colorPrimaryLight,
                           child: Text(
-                            'friends',
+                            this.context.localeRepository().getString("friends"),
                             style: TextStyle(
                               color: Colors.white,
                             ),

@@ -45,7 +45,9 @@ class _LeaderBoardLeague extends State<LeaderBoardLeaguePage> {
           Container(
             child: Column(
               children: [
-                LeaderBoardLeagueAchievement(),
+                LeaderBoardLeagueAchievement(
+                  localeRepository: widget.context.localeRepository(),
+                ),
                 LeaderBoardLeagueUser(
                   context: widget.context,
                   config: widget.config,

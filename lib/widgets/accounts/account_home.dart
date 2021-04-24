@@ -115,7 +115,7 @@ class _AccountHome extends State<AccountHome> {
                           },
                           child: Container(
                             child: Text(
-                              "change_password_button",
+                              widget.context.localeRepository().getString("account_change_password_button"),
                               style: TextStyle(
                                 fontSize: p,
                                 color: colorPrimary,
@@ -191,7 +191,7 @@ class _AccountHome extends State<AccountHome> {
                           ),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "star_description",
+                            widget.context.localeRepository().getString("account_star_description"),
                             style: TextStyle(
                               color: colorGray,
                               fontSize: s,
@@ -211,7 +211,7 @@ class _AccountHome extends State<AccountHome> {
                                   //   right: 16,
                                   // ),
                                   child: Text(
-                                    "quiz_button",
+                                    widget.context.localeRepository().getString("account_quiz_button"),
                                     style: TextStyle(
                                       color: colorPrimary,
                                     ),
@@ -279,7 +279,7 @@ class _AccountHome extends State<AccountHome> {
                           ),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "score_description",
+                            widget.context.localeRepository().getString("account_score_description"),
                             style: TextStyle(
                               color: colorGray,
                               fontSize: s,
@@ -296,7 +296,7 @@ class _AccountHome extends State<AccountHome> {
                               children: [
                                 Container(
                                   child: Text(
-                                    "score_button",
+                                    widget.context.localeRepository().getString("account_score_button"),
                                     style: TextStyle(
                                       color: colorPrimary,
                                     ),
@@ -329,7 +329,7 @@ class _AccountHome extends State<AccountHome> {
               color: Colors.redAccent,
               padding: EdgeInsets.all(16),
               child: Text(
-                "logout",
+                widget.context.localeRepository().getString("logout"),
                 style: TextStyle(
                   fontSize: h4,
                   color: Colors.white,

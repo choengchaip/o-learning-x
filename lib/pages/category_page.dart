@@ -63,7 +63,7 @@ class CategoryPageState extends State<CategoryPage> {
                 CategoryContinueLearning(
                   context: widget.context,
                   config: widget.config,
-                  title: "continue_learning",
+                  title: widget.context.localeRepository().getString("continue_learning"),
                   items:
                       widget.context.repositories().myCourseRepository().items,
                   onClick: (String id) async {
@@ -86,7 +86,7 @@ class CategoryPageState extends State<CategoryPage> {
                   },
                 ),
                 CategoryRecommend(
-                  title: "recommend_course",
+                  title: widget.context.localeRepository().getString("recommend_course"),
                   items: widget.context.repositories().courseRepository().items,
                   onClick: (String id) async {
                     await widget.context
@@ -108,7 +108,8 @@ class CategoryPageState extends State<CategoryPage> {
                   },
                 ),
                 CategorySearch(
-                  title: "browse_categories",
+                  title: widget.context.localeRepository().getString("browse_categories"),
+                  localeRepository: widget.context.localeRepository(),
                   items:
                       widget.context.repositories().categoryRepository().items,
                   onClick: (String id, String name) async {

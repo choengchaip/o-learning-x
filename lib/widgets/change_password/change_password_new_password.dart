@@ -80,7 +80,7 @@ class _ChangePasswordNewPasswordState extends State<ChangePasswordNewPassword> {
                   Container(
                     margin: EdgeInsets.only(bottom: 48),
                     child: Text(
-                      "new_password_title",
+                      widget.context.localeRepository().getString("change_password_new_password_title"),
                       style: TextStyle(
                         fontSize: h3,
                         fontWeight: fontWeightBold,

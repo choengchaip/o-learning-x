@@ -80,7 +80,7 @@ class _ChangePasswordPasswordState extends State<ChangePasswordPassword> {
                   Container(
                     margin: EdgeInsets.only(bottom: 48),
                     child: Text(
-                      "password_title",
+                      widget.context.localeRepository().getString("change_password_password_title"),
                       style: TextStyle(
                         fontSize: h3,
                         fontWeight: fontWeightBold,
@@ -122,7 +122,7 @@ class _ChangePasswordPasswordState extends State<ChangePasswordPassword> {
 
                       return CurveButton(
                         margin: EdgeInsets.only(top: 12, bottom: 12),
-                        title: "continue_button",
+                        title: widget.context.localeRepository().getString("change_password_continue_button"),
                         onClick: () {
                           this.passwordFocus.unfocus();
                           widget.context.repositories().authenticationRepository().setPassword(this.passwordText.text);
